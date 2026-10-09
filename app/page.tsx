@@ -15,9 +15,9 @@ export default function Home() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/brand/logo.svg" alt="OFFENSAI" className="h-7 w-auto" />
       <AgentsVideo className="mt-6 w-full max-w-xs" />
-      <h1 className="mt-4 text-balance text-center text-3xl font-semibold md:text-5xl">Three landing page concepts</h1>
+      <h1 className="mt-4 text-balance text-center text-3xl font-semibold md:text-5xl">Six landing page concepts</h1>
       <p className="mt-3 max-w-xl text-pretty text-center text-muted-foreground">
-        Same product, three ways to get the why and the how across. All are about chains and paths.
+        Same product, six ways to get the why and the how across. All are about chains and paths.
       </p>
       <ul className="mt-10 grid w-full max-w-5xl gap-4 md:grid-cols-3">
         {concepts.map((c) => (
