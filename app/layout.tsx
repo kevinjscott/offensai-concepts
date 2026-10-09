@@ -1,18 +1,18 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Inter_Tight, TASA_Orbiter } from 'next/font/google'
+import localFont from 'next/font/local'
 import { ConceptSwitcher } from '@/components/brand/concept-switcher'
 import { MotionProvider } from '@/components/brand/motion-provider'
 import './globals.css'
 
-const heading = TASA_Orbiter({
-  subsets: ['latin'],
-  variable: '--font-heading',
-  display: 'swap',
-})
-const body = Inter_Tight({
-  subsets: ['latin'],
-  variable: '--font-body',
+const silka = localFont({
+  src: [
+    { path: '../public/fonts/silka-regular.woff2', weight: '400', style: 'normal' },
+    { path: '../public/fonts/silka-medium.woff2', weight: '500', style: 'normal' },
+    { path: '../public/fonts/silka-semibold.woff2', weight: '600', style: 'normal' },
+    { path: '../public/fonts/silka-bold.woff2', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-silka',
   display: 'swap',
 })
 
@@ -33,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${heading.variable} ${body.variable} bg-background`}>
+    <html lang="en" className={`${silka.variable} bg-background`}>
       <body className="antialiased">
         <MotionProvider>
           {children}

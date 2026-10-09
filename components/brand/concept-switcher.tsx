@@ -15,9 +15,9 @@ export function ConceptSwitcher() {
   return (
     <nav
       aria-label="Landing page concepts"
-      className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-4"
+      className="pointer-events-none fixed bottom-3 left-3 z-50"
     >
-      <ul className="flex items-center gap-1 rounded-full border border-border bg-ink/90 p-1 text-xs backdrop-blur-md">
+      <ul className="pointer-events-auto flex items-center gap-1 rounded-full border border-border bg-ink/90 p-1 text-xs opacity-40 backdrop-blur-md transition-opacity hover:opacity-100 focus-within:opacity-100">
         <li>
           <Link href="/" className="rounded-full px-3 py-1.5 text-muted-foreground transition-colors hover:text-foreground">
             All

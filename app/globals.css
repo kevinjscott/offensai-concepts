@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-body), 'Inter Tight', sans-serif;
-  --font-display: var(--font-heading), 'TASA Orbiter', sans-serif;
+  --font-sans: var(--font-silka), system-ui, sans-serif;
+  --font-display: var(--font-silka), system-ui, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', 'Geist Mono', Menlo, monospace;
 
   --color-background: var(--background);
