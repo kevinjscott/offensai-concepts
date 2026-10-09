@@ -1,47 +1,41 @@
-export default function Page() {
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import { AgentsVideo } from '@/components/brand/agents-video'
+import { concepts } from '@/components/brand/concept-switcher'
+
+export default function Home() {
   return (
-    <main
-      style={{
-        colorScheme: 'light dark',
-        position: 'relative',
-        display: 'flex',
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'light-dark(#fff, #000)',
-        color: 'light-dark(#000, #fff)',
-      }}
-    >
-      <svg
-        aria-hidden="true"
-        style={{ width: 80, height: 80 }}
-        width={80}
-        height={80}
-        fill="none"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
-        strokeWidth="0.5"
-      >
-        <path
-          d="M14.2 14.2H17V6.9375C17 4.76288 15.2371 3 13.0625 3H5.8V5.8M14.2 14.2V7.79063L7.79062 14.2H14.2ZM14.2 14.2V17H6.9375C4.76288 17 3 15.2371 3 13.0625V5.8H5.8M5.8 5.8V12.2313L12.2313 5.8H5.8Z"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <p
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: 'calc(50% + 56px)',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
-          fontSize: '14px',
-          fontWeight: 500,
-          color: 'light-dark(#71717a, #a1a1aa)',
-        }}
-      >
-        Your v0 generation will show here.
+    <main className="relative isolate flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 py-24">
+      <div
+        className="absolute inset-0 -z-10 bg-cover bg-top opacity-70"
+        style={{ backgroundImage: 'url(/brand/hero-bg.png)' }}
+        aria-hidden
+      />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-background/60 to-background" aria-hidden />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/brand/logo.svg" alt="OFFENSAI" className="h-7 w-auto" />
+      <AgentsVideo className="mt-6 w-full max-w-xs" />
+      <h1 className="mt-4 text-balance text-center text-3xl font-semibold md:text-5xl">Three landing page concepts</h1>
+      <p className="mt-3 max-w-xl text-pretty text-center text-muted-foreground">
+        Same product, three ways to get the why and the how across. All are about chains and paths.
       </p>
+      <ul className="mt-10 grid w-full max-w-5xl gap-4 md:grid-cols-3">
+        {concepts.map((c) => (
+          <li key={c.href}>
+            <Link
+              href={c.href}
+              className="group flex h-full flex-col rounded-2xl border border-border bg-card/70 p-6 transition-colors hover:border-primary/60"
+            >
+              <span className="font-mono text-xs text-primary">Concept {c.short}</span>
+              <span className="mt-3 text-xl font-semibold">{c.label}</span>
+              <span className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.blurb}</span>
+              <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+                Open <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </main>
   )
 }
