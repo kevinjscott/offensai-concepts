@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { AgentsVideo } from '@/components/brand/agents-video'
-import { concepts } from '@/components/brand/concept-switcher'
+import { concepts } from '@/lib/concepts'
 
 export default function Home() {
   return (
