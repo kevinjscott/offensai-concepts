@@ -74,7 +74,7 @@ export function RouteVariants() {
       </div>
 
       <div className="mx-auto mt-10 max-w-5xl rounded-3xl border border-border bg-card/50 p-4 md:p-8">
-        <svg viewBox="0 0 1000 360" className="w-full" fill="none" role="img" aria-label="Three routes from an entry point to a crown jewel">
+        <svg viewBox="0 0 1000 360" className="w-full overflow-visible" fill="none" role="img" aria-label="Three routes from an entry point to a crown jewel">
           {routes.map((r) => {
             const visible = mode === 'generative' || !r.generative
             const dim = hover && hover !== r.id
@@ -111,7 +111,7 @@ export function RouteVariants() {
           <circle cx={goal[0]} cy={goal[1]} r={20} fill="#04060d" stroke="#ff5b4a" strokeWidth={3} />
           <circle cx={goal[0]} cy={goal[1]} r={7} fill="#ff5b4a" />
           <text x={entry[0]} y={entry[1] - 36} textAnchor="middle" className="fill-muted-foreground" fontSize={22}>Entry</text>
-          <text x={goal[0]} y={goal[1] - 36} textAnchor="middle" className="fill-muted-foreground" fontSize={22}>Crown jewel</text>
+          <text x={goal[0] + 20} y={goal[1] - 36} textAnchor="end" className="fill-muted-foreground" fontSize={22}>Crown jewel</text>
         </svg>
 
         <ul className="mt-6 grid gap-3 md:grid-cols-3">
