@@ -66,6 +66,29 @@ function trimWav(buf: Buffer, thresh = 600, keepHead = 0.04, keepTail = 0.12) {
   return { wav: Buffer.concat([head, slice]), seconds: slice.length / 2 / ch / rate }
 }
 
+/**
+ * The TTS model appends two full-scale noise pulses (~160ms of silence, then ~40ms and ~90ms of
+ * clipped noise) to the end of every clip. They sit above the trim threshold so trimWav keeps them.
+ * Zero them in place (length unchanged, so the timeline stays aligned).
+ */
+function silenceTailNoise(wav: Buffer) {
+  const dataIdx = wav.indexOf(Buffer.from('data'))
+  const rate = wav.readUInt32LE(24)
+  const ch = wav.readUInt16LE(22)
+  const start = dataIdx + 8
+  const n = Math.floor((wav.length - start) / 2 / ch)
+  const amp = (i: number) => Math.abs(wav.readInt16LE(start + i * 2 * ch)) / 32768
+  let onset = -1
+  for (let i = Math.max(0, n - Math.floor(rate * 0.4)); i < n; i++) if (amp(i) > 0.9) { onset = i; break }
+  if (onset < 0) return wav
+  const w = Math.floor(rate * 0.005)
+  const windowPeak = (a: number) => { let m = 0; for (let k = Math.max(0, a); k < a + w; k++) m = Math.max(m, amp(k)); return m }
+  while (onset > w && windowPeak(onset - w) > 0.02) onset -= w
+  while (onset > 0 && amp(onset - 1) > 0.002) onset--
+  wav.fill(0, start + onset * 2 * ch)
+  return wav
+}
+
 const force = process.argv.includes('--force')
 const timeline: { id: string; caption: string; file: string; start: number; dur: number; startFrame: number; durFrames: number }[] = []
 let cursor = 0
@@ -81,7 +104,9 @@ for (const line of LINES) {
     raw = Buffer.from(res.audio.uint8Array)
     await writeFile(cache, raw)
   }
-  const { wav, seconds } = trimWav(raw)
+  const trimmed = trimWav(raw)
+  const wav = silenceTailNoise(trimmed.wav)
+  const seconds = trimmed.seconds
   await writeFile(file, wav)
   cursor += line.gap
   timeline.push({

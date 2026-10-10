@@ -80,7 +80,7 @@ export const Explainer: React.FC<{ withAudio?: boolean }> = ({ withAudio = true 
         <>
           {lines.map((l) => (
             <Sequence key={l.id} from={l.startFrame} durationInFrames={l.durFrames + 6} layout="none">
-              <Audio src={staticFile(l.file)} volume={1} />
+              <Audio src={staticFile(l.file)} volume={0.8} />
             </Sequence>
           ))}
           <Audio src={staticFile('audio/music.wav')} volume={0.85} />
