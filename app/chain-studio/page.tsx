@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { SiteNav } from '@/components/brand/site-nav'
 import { ClosingCta, LogoStrip, SiteFooter } from '@/components/brand/shared-sections'
-import { AttackStudio } from '@/components/studio/attack-studio'
 import { EvasionSection, FaqSection } from '@/components/studio/evasion-and-faq'
 import { RouteVariants } from '@/components/studio/route-variants'
 import { StageTabs } from '@/components/studio/stage-tabs'
@@ -27,7 +26,6 @@ export default function ChainStudio() {
       <LogoStrip />
       <RouteVariants />
       <StageTabs />
-      <AttackStudio />
       <EvasionSection />
       <FaqSection />
       <ClosingCta headline="Stop guessing which dots matter." />
