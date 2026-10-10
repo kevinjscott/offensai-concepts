@@ -208,7 +208,7 @@ function whoosh(dur = 0.7, up = true) {
     y2 += a * (y1 - y2)
     y3 += a * (y2 - y3)
     const env = Math.pow(Math.sin(Math.PI * p), 1.5)
-    out[i] = (y2 - y3) * 5 * env
+    out[i] = (y2 - y3) * 1.4 * env
   }
   return out
 }
@@ -433,7 +433,6 @@ async function buildSfx() {
       case 'strike': {
         const w = whoosh(0.28, false)
         dry.add(c.t, w, 0.5 * g, 0)
-        dry.add(c.t + 0.05, crack(), 0.35 * g, 0)
         break
       }
       case 'flood': {
@@ -465,12 +464,11 @@ async function buildSfx() {
         break
       }
       case 'riser-hit': {
-        dry.add(c.t, whoosh(0.5, false), 0.5 * g, 0)
+        dry.add(c.t, whoosh(0.5, false), 0.35 * g, 0)
         break
       }
       case 'click':
-        dry.add(c.t, blip(3200, 0.02, 0.8), 0.7 * g, 0)
-        dry.add(c.t + 0.07, blip(1800, 0.03, 0.5), 0.5 * g, 0)
+        dry.add(c.t, blip(1800, 0.05, 0.4), 0.3 * g, 0)
         break
       case 'check': {
         const a = blip(1318, 0.12, 0.4)
@@ -481,7 +479,7 @@ async function buildSfx() {
         break
       }
       case 'snap':
-        dry.add(c.t, crack(), 0.9 * g, 0)
+        dry.add(c.t, crack(), 0.3 * g, 0)
         break
       case 'fix': {
         for (const f of [587, 740, 880, 1175]) {
@@ -613,7 +611,7 @@ for (let i = 0; i < N; i++) {
 }
 let peak = 0
 for (let i = 0; i < N; i++) peak = Math.max(peak, Math.abs(sfx.L[i]), Math.abs(sfx.R[i]))
-const sfxScale = peak > 0 ? Math.min(1.5, 0.7 / peak) : 1
+const sfxScale = peak > 0 ? Math.min(0.55, 0.7 / peak) : 1
 for (let i = 0; i < N; i++) {
   sfx.L[i] = Math.tanh(sfx.L[i] * sfxScale)
   sfx.R[i] = Math.tanh(sfx.R[i] * sfxScale)
