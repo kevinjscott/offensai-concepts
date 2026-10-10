@@ -138,7 +138,7 @@ function kick(len = 0.45, punch = 1) {
     const t = i / SR
     const f = 42 + 120 * Math.exp(-t / 0.028)
     ph += (TAU * f) / SR
-    const click = i < 90 ? noise() * 0.4 * (1 - i / 90) : 0
+    const click = i < 90 ? noise() * 0.08 * (1 - i / 90) : 0
     out[i] = (Math.sin(ph) * Math.exp(-t / 0.16) + click) * punch
   }
   return out
@@ -155,24 +155,7 @@ function hat(open = false, len = 0.09) {
     const hp = x - prev
     prev = x
     lp += a * (hp - lp)
-    out[i] = lp * Math.exp(-(i / SR) / (open ? 0.09 : 0.022)) * 0.22
-  }
-  return out
-}
-
-function clap() {
-  const n = Math.ceil(0.32 * SR)
-  const out = new Float32Array(n)
-  const a = lpCoef(3400)
-  let y = 0
-  let prev = 0
-  for (let i = 0; i < n; i++) {
-    const t = i / SR
-    y += a * (noise() - y)
-    const hp = y - prev * 0.9
-    prev = y
-    const bursts = [0, 0.011, 0.022].reduce((s, b) => s + (t >= b ? Math.exp(-(t - b) / 0.006) : 0), 0)
-    out[i] = hp * (bursts * 0.5 + Math.exp(-t / 0.09) * 0.6) * 0.9
+    out[i] = lp * Math.exp(-(i / SR) / (open ? 0.09 : 0.022)) * 0.07
   }
   return out
 }
@@ -349,7 +332,6 @@ async function buildMusic() {
   // kicks / hats / claps
   const kickBuf = kick()
   const hatC = hat(false)
-  const clapB = clap()
   for (let t = T.chainStart + 0.3; t < T.machines; t += BEAT) {
     dry.add(t, kickBuf, t < T.breach ? 0.35 : 0.6, 0)
   }
@@ -364,12 +346,7 @@ async function buildMusic() {
       dry.add(t + BEAT / 2, hat(false, 0.05), 0.5, 0.35)
     }
   }
-  for (let t = T.hit + 0.2 + BEAT; t < T.end - 0.1; t += BEAT * 2) {
-    if (t >= T.breakStart && t < T.fixDrop) continue
-    const c = clapB
-    dry.add(t, c, 0.5, 0)
-    send.add(t, c, 0.5, 0)
-  }
+
   for (let t = at('c3'); t < T.machines; t += BEAT / 2) dry.add(t + BEAT / 4, hat(false), 0.25, 0.4)
 
   // bass (saw, 8th pulses) in main section
