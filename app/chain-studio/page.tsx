@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { SiteNav } from '@/components/brand/site-nav'
 import { ClosingCta, LogoStrip, SiteFooter } from '@/components/brand/shared-sections'
+import { AgentNetwork } from '@/components/studio/agent-network'
 import { EvasionSection, FaqSection } from '@/components/studio/evasion-and-faq'
 import { RouteVariants } from '@/components/studio/route-variants'
 import { StageTabs } from '@/components/studio/stage-tabs'
@@ -19,6 +20,7 @@ export default function ChainStudio() {
         links={[
           { href: '#generate', label: 'Generate' },
           { href: '#how', label: 'How it works' },
+          { href: '#agent-network', label: 'Agent network' },
           { href: '#faq', label: 'FAQs' },
         ]}
       />
@@ -26,6 +28,7 @@ export default function ChainStudio() {
       <LogoStrip />
       <RouteVariants />
       <StageTabs />
+      <AgentNetwork />
       <EvasionSection />
       <FaqSection />
       <ClosingCta headline="Stop guessing which risks matter." />

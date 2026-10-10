@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { animate, useMotionValue } from 'motion/react'
 import { SectionHeading } from '@/components/brand/reveal'
 
-const HOPS = 5
+const HOPS = 7
 
 function formatDuration(minutes: number) {
   const hours = minutes / 60
@@ -32,7 +32,7 @@ export function PathExplosion() {
   return (
     <section id="explosion" className="px-6 py-20 md:py-28">
       <SectionHeading eyebrow="Why it's hard" title="Every hop multiplies the routes">
-        You found one path in five moves. Each hop usually offers several onward options. Count how quickly that grows.
+        You found one path in seven moves. Each hop usually offers several onward options. Count how quickly that grows.
       </SectionHeading>
 
       <div className="mx-auto mt-12 max-w-3xl rounded-3xl border border-border bg-card/60 p-6 md:p-10">

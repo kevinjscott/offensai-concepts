@@ -9,8 +9,8 @@ import type { TermLine } from '@/lib/terminal'
 
 const lines: TermLine[] = [
   { k: 'cmd', t: 'findings export --all' },
-  { k: 'warn', t: '2,847 rows written. good luck.' },
-  { k: 'cmd', t: 'show me the chain' },
+  { k: 'warn', t: 'thousands of rows written. good luck.' },
+  { k: 'cmd', t: 'Agent O: show me the chain' },
   { k: 'ok', t: 'attacker -> gitlab ci -> federated trust' },
   { k: 'ok', t: '         -> service principal -> key vault' },
   { k: 'ok', t: '         -> production tenant' },
@@ -49,7 +49,7 @@ export function TuiHero() {
           transition={{ duration: 0.8, delay: 0.25 }}
           className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-foreground/80"
         >
-          Skip the export. Pick a path, approve a read-only validation, and read the evidence hop by hop.
+          Skip the export. Pick a proven path, approve it, and read the evidence hop by hop. Full reports, no hallucinations.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -69,7 +69,7 @@ export function TuiHero() {
         className="relative mx-auto mt-10 max-w-3xl"
       >
         <AgentsVideo className="relative z-10 -mb-5 mx-auto w-56 sm:w-72" />
-        <TerminalWindow title="~/cloud" bodyClassName="min-h-52">
+        <TerminalWindow title="ATTACKSTUDIO" bodyClassName="min-h-52">
           <TermLines lines={lines} />
         </TerminalWindow>
       </motion.div>

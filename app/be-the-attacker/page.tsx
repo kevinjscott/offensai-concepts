@@ -6,6 +6,7 @@ import { Reveal } from '@/components/brand/reveal'
 import { ClosingCta, SiteFooter, TrustRow } from '@/components/brand/shared-sections'
 import { AttackerGame } from '@/components/attacker/attacker-game'
 import { AttackerHero } from '@/components/attacker/attacker-hero'
+import { ExternalSteps } from '@/components/attacker/external-steps'
 import { PathExplosion } from '@/components/attacker/path-explosion'
 
 export const metadata: Metadata = {
@@ -19,11 +20,13 @@ export default function BeTheAttackerPage() {
     <main>
       <SiteNav
         links={[
+          { href: '#external', label: 'From the outside' },
           { href: '#play', label: 'Play' },
           { href: '#explosion', label: 'Why it is hard' },
         ]}
       />
       <AttackerHero />
+      <ExternalSteps />
       <AttackerGame />
       <PathExplosion />
       <section className="px-6 pb-8">

@@ -76,7 +76,7 @@ export function TuiApp() {
   const bar = '#'.repeat(hopsDone) + '.'.repeat(last - hopsDone)
 
   const log: TermLine[] = []
-  if (step >= 0) log.push({ k: 'cmd', t: `validate ${chain.id} --read-only` })
+  if (step >= 0) log.push({ k: 'cmd', t: `Agent O: run "${chain.name}"` })
   chain.hops.forEach((hop, i) => {
     if (step > i) log.push({ k: 'ok', t: `hop ${i + 1}  ${hop.evidence}` })
   })
@@ -84,9 +84,9 @@ export function TuiApp() {
 
   return (
     <section id="tui" className="px-6 py-20 md:py-28">
-      <SectionHeading eyebrow="Try it" title="A console built for chains">
-        Pick a path with the arrow keys, approve a read-only validation, and watch the evidence arrive. Click the
-        window to focus it, or use the buttons.
+      <SectionHeading eyebrow="Try it" title="Operator-driven, with Agent O at the keys">
+        ATTACKSTUDIO lets operators build and control campaigns, while Agent O runs proven paths end to end. Pick a
+        path, approve it, and watch the evidence arrive. Click the window to focus it, or use the buttons.
       </SectionHeading>
 
       <div className="mx-auto mt-14 max-w-6xl">
@@ -110,7 +110,7 @@ export function TuiApp() {
             <span className="size-3 rounded-full bg-[#febc2e]" />
             <span className="size-3 rounded-full bg-[#28c840]" />
             </span>
-            <span className="ml-2 text-xs text-muted-foreground">offensai console</span>
+            <span className="ml-2 text-xs text-muted-foreground">ATTACKSTUDIO</span>
             <span className="ml-auto text-[11px] text-muted-foreground">{focused ? 'focused' : 'click to focus'}</span>
           </div>
 
@@ -193,7 +193,7 @@ export function TuiApp() {
                   className="absolute inset-x-3 bottom-3 rounded-lg border border-violet/60 bg-ink p-3"
                 >
                   <p className="text-violet">? Run a read-only validation on this chain?</p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">Nothing runs without your approval.</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">Validations only run on your approval.</p>
                   <div className="mt-3 flex gap-2">
                     <button
                       onClick={(e) => {

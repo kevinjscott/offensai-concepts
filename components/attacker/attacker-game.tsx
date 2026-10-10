@@ -7,7 +7,7 @@ import { ChainGraph, ChainRail } from '@/components/brand/chain-graph'
 import { SectionHeading } from '@/components/brand/reveal'
 import { TermRow } from '@/components/term/term-lines'
 import { TerminalWindow } from '@/components/term/terminal-window'
-import { awsChain as chain } from '@/lib/chains'
+import { externalChain as chain } from '@/lib/chains'
 import type { TermLine } from '@/lib/terminal'
 import { cn } from '@/lib/utils'
 
@@ -25,7 +25,23 @@ interface Move {
 // Simulated, abbreviated commands in a fictional account. No real resources are touched.
 const moves: Move[] = [
   {
-    prompt: 'You hold a stale developer key. First move?',
+    prompt: 'You have a domain name and nothing else. No credentials. First move?',
+    options: [
+      { cmd: 'ssh admin@example-corp.io', out: 'Permission denied. No credentials, no door.', kind: 'err' },
+      { cmd: 'search public code repos for example-corp.io', out: 'A public repo names an AWS account ID and a bucket, corp-assets-prod.', kind: 'ok' },
+      { cmd: 'nmap -p- example-corp.io', out: 'Mostly filtered. Noisy, and nothing to pivot on.', kind: 'miss' },
+    ],
+  },
+  {
+    prompt: 'You have a bucket name from public signals. Is it exposed?',
+    options: [
+      { cmd: 'aws iam list-users', out: 'Unable to locate credentials.', kind: 'err' },
+      { cmd: 'curl https://corp-assets-prod.s3.amazonaws.com/robots.txt', out: 'Not found. Nothing useful.', kind: 'miss' },
+      { cmd: 'aws s3 ls s3://corp-assets-prod --no-sign-request', out: 'Public listing. A backup file, .env.bak, is readable.', kind: 'ok' },
+    ],
+  },
+  {
+    prompt: 'The backup file holds a developer key. Does it still work?',
     options: [
       { cmd: 'aws sts get-caller-identity', out: 'dev-contractor. Low privilege, but the key is live.', kind: 'ok' },
       { cmd: 'aws s3 ls s3://prod-data-lake', out: 'AccessDenied. This user cannot read the lake directly.', kind: 'err' },
@@ -117,9 +133,9 @@ export function AttackerGame() {
 
   return (
     <section id="play" className="px-6 py-20 md:py-28">
-      <SectionHeading eyebrow="Play" title="Find the way to the data lake">
-        A made-up AWS account. A stale key. Five hops. Pick commands with the buttons or press 1, 2 and 3, and watch
-        the chain build as you go.
+      <SectionHeading eyebrow="Play" title="Start from the outside. Find the data lake.">
+        A made-up company with a public domain and no credentials for you. Seven hops from public signals to
+        production data. Pick commands with the buttons or press 1, 2 and 3, and watch the chain build as you go.
       </SectionHeading>
 
       <div className="mx-auto mt-14 grid max-w-6xl gap-6 lg:grid-cols-[320px_1fr]">
@@ -129,7 +145,7 @@ export function AttackerGame() {
 
         <div className="order-1 min-w-0 lg:order-2">
           <TerminalWindow
-            title="sandbox-account / attacker-shell"
+            title="external recon / attacker view"
             bodyClassName="p-0"
             footer={
               <div className="border-t border-border px-4 py-3 font-mono text-xs md:text-[13px]">
@@ -139,8 +155,8 @@ export function AttackerGame() {
                       + Impact reached in {attempts} moves. {wasted} of them were dead ends or denials.
                     </p>
                     <p className="text-foreground/80">
-                      That was one account, one chain, and fifteen options. Your cloud has thousands of identities and
-                      roles, and the route you took is only one of many.
+                      That was one company, one chain, and {moves.length * 3} options. A real cloud spans millions of
+                      relationships, and the route you took is only one of many.
                     </p>
                     <button
                       onClick={reset}
@@ -181,7 +197,7 @@ export function AttackerGame() {
           >
             <div ref={logRef} className="h-56 overflow-y-auto p-4" aria-live="polite">
               {log.length === 0 ? (
-                <TermRow line={{ k: 'dim', t: 'connected with a leaked developer key. pick your first move below.' }} />
+                <TermRow line={{ k: 'dim', t: 'recon only. you have a domain name and no credentials. pick your first move below.' }} />
               ) : (
                 <div className="flex flex-col gap-1.5">
                   {log.map((l, i) => (

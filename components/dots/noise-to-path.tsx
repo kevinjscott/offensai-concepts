@@ -37,7 +37,7 @@ function captionFor(v: number, step: number) {
     }
   }
   if (v < 0.15)
-    return { key: 'p0', eyebrow: 'Your dashboard today', title: '2,847 open findings.', body: 'All of it is noise. None of it says which risks combine into a breach.' }
+    return { key: 'p0', eyebrow: 'Your dashboard today', title: 'Thousands of cloud changes. Every day.', body: 'Most are noise. The few that matter are the combinations that collapse a trust boundary or enable lateral movement.' }
   return { key: 'p1', eyebrow: 'Attackers do not read lists', title: 'They chain what you only list.', body: 'Keep scrolling and watch a real attack path form.' }
 }
 
