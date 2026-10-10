@@ -22,9 +22,9 @@ export function TerminalWindow({
     >
       <div className="flex items-center gap-2 border-b border-border px-4 py-2.5">
         <span className="flex gap-1.5" aria-hidden>
-          <span className="size-2.5 rounded-full bg-ember/80" />
-          <span className="size-2.5 rounded-full bg-violet/80" />
-          <span className="size-2.5 rounded-full bg-primary/80" />
+          <span className="size-3 rounded-full bg-[#ff5f57]" />
+          <span className="size-3 rounded-full bg-[#febc2e]" />
+          <span className="size-3 rounded-full bg-[#28c840]" />
         </span>
         <span className="ml-2 truncate font-mono text-xs text-muted-foreground">{title}</span>
       </div>
