@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { AgentsVideo } from '@/components/brand/agents-video'
-import { VideoPlayer } from '@/components/explainer/video-player'
+import { ExplainerSwitcher } from '@/components/explainer/explainer-switcher'
 import { concepts } from '@/lib/concepts'
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
       <p className="mt-3 max-w-xl text-pretty text-center text-muted-foreground">
         Watch how OFFENSAI&apos;s agents find, validate and prioritize the paths attackers actually take.
       </p>
-      <VideoPlayer className="mt-8 max-w-5xl" />
+      <ExplainerSwitcher className="mt-8 max-w-5xl" />
       <AgentsVideo className="mt-16 w-full max-w-[14rem]" />
       <h2 className="mt-4 text-balance text-center text-2xl font-semibold md:text-4xl">Six landing page concepts</h2>
       <p className="mt-3 max-w-xl text-pretty text-center text-muted-foreground">
