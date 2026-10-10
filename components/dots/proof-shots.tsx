@@ -11,7 +11,7 @@ export function ProofShots() {
   const yRight = useTransform(scrollYProgress, [0, 1], [-10, 70])
 
   return (
-    <section ref={ref} className="overflow-hidden px-6 py-24 md:py-32">
+    <section id="output" ref={ref} className="overflow-hidden px-6 py-24 md:py-32">
       <SectionHeading eyebrow="The output" title="A chain nobody wrote a rule for. Then the receipt.">
         The generative engine builds the path. The report shows what ran, what it reached, and how bad it is.
       </SectionHeading>
