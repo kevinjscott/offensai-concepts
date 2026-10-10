@@ -148,11 +148,14 @@ function hat(open = false, len = 0.09) {
   const n = Math.ceil(len * SR * (open ? 3 : 1))
   const out = new Float32Array(n)
   let prev = 0
+  let lp = 0
+  const a = lpCoef(6500)
   for (let i = 0; i < n; i++) {
     const x = noise()
     const hp = x - prev
     prev = x
-    out[i] = hp * Math.exp(-(i / SR) / (open ? 0.09 : 0.022)) * 0.45
+    lp += a * (hp - lp)
+    out[i] = lp * Math.exp(-(i / SR) / (open ? 0.09 : 0.022)) * 0.22
   }
   return out
 }
@@ -198,12 +201,12 @@ function riser(dur: number) {
   let ph = 0
   for (let i = 0; i < n; i++) {
     const p = i / n
-    const fc = 250 * Math.pow(36, p)
+    const fc = 200 * Math.pow(9, p)
     const a = lpCoef(fc)
     y1 += a * (noise() - y1)
     y2 += a * (y1 - y2)
     ph += (TAU * (180 * Math.pow(8, p))) / SR
-    out[i] = (y2 * 2.2 + Math.sin(ph) * 0.12) * Math.pow(p, 2.2) * 0.9
+    out[i] = (y2 * 1.3 + Math.sin(ph) * 0.2) * Math.pow(p, 2.2) * Math.min(1, (1 - p) / 0.08) * 0.8
   }
   return out
 }
@@ -213,14 +216,16 @@ function whoosh(dur = 0.7, up = true) {
   const out = new Float32Array(n)
   let y1 = 0
   let y2 = 0
+  let y3 = 0
   for (let i = 0; i < n; i++) {
     const p = i / n
-    const fc = up ? 400 * Math.pow(14, p) : 5600 * Math.pow(0.07, p)
+    const fc = up ? 260 * Math.pow(7, p) : 1800 * Math.pow(0.12, p)
     const a = lpCoef(fc)
     y1 += a * (noise() - y1)
     y2 += a * (y1 - y2)
-    const env = Math.sin(Math.PI * Math.pow(p, 0.8))
-    out[i] = (y1 - y2) * 4.5 * env
+    y3 += a * (y2 - y3)
+    const env = Math.pow(Math.sin(Math.PI * p), 1.5)
+    out[i] = (y2 - y3) * 5 * env
   }
   return out
 }
@@ -238,15 +243,14 @@ function blip(freq: number, dur = 0.09, gain = 0.5) {
 function crack() {
   const n = Math.ceil(0.35 * SR)
   const out = new Float32Array(n)
-  let prev = 0
   let ph = 0
+  let ph2 = 0
   for (let i = 0; i < n; i++) {
     const t = i / SR
-    const x = noise()
-    const hp = x - prev * 0.6
-    prev = x
-    ph += (TAU * (200 * Math.exp(-t / 0.05) + 55)) / SR
-    out[i] = hp * Math.exp(-t / 0.018) * 0.9 + Math.sin(ph) * Math.exp(-t / 0.12) * 0.8
+    ph += (TAU * (190 * Math.exp(-t / 0.05) + 55)) / SR
+    ph2 += (TAU * 880) / SR
+    const attack = Math.min(1, t / 0.002)
+    out[i] = (Math.sin(ph) * Math.exp(-t / 0.12) * 0.8 + Math.sin(ph2) * Math.exp(-t / 0.03) * 0.25) * attack
   }
   return out
 }
@@ -456,7 +460,13 @@ async function buildSfx() {
         break
       }
       case 'flood': {
-        for (let i = 0; i < 70; i++) dry.add(c.t + i * 0.017 + rnd() * 0.01, blip(1400 + rnd() * 3600, 0.025, 0.2), g * 0.5, rnd() * 1.6 - 0.8)
+        const scale = [74, 77, 81, 84, 86, 89]
+        for (let i = 0; i < 14; i++) {
+          const m = scale[i % scale.length] + (i > 8 ? 12 : 0)
+          const b = blip(mtof(m), 0.12, 0.3)
+          dry.add(c.t + i * 0.06, b, g * (0.18 + i * 0.015), i % 2 ? 0.4 : -0.4)
+          send.add(c.t + i * 0.06, b, 0.5, 0)
+        }
         break
       }
       case 'whoosh':
@@ -505,7 +515,9 @@ async function buildSfx() {
         break
       }
       case 'final-hit': {
-        dry.add(c.t, whoosh(0.4, false), 0.4, 0)
+        const b = bell(587, 1.8)
+        dry.add(c.t, b, 0.35, 0)
+        send.add(c.t, b, 0.6, 0)
         break
       }
     }
@@ -624,7 +636,7 @@ for (let i = 0; i < N; i++) {
 }
 let peak = 0
 for (let i = 0; i < N; i++) peak = Math.max(peak, Math.abs(sfx.L[i]), Math.abs(sfx.R[i]))
-const sfxScale = peak > 0 ? 1.9 : 1
+const sfxScale = peak > 0 ? Math.min(1.5, 0.7 / peak) : 1
 for (let i = 0; i < N; i++) {
   sfx.L[i] = Math.tanh(sfx.L[i] * sfxScale)
   sfx.R[i] = Math.tanh(sfx.R[i] * sfxScale)

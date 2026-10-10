@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { AgentsVideo } from '@/components/brand/agents-video'
+import { VideoPlayer } from '@/components/explainer/video-player'
 import { concepts } from '@/lib/concepts'
 
 export default function Home() {
@@ -14,8 +15,13 @@ export default function Home() {
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-background/60 to-background" aria-hidden />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/brand/logo.svg" alt="OFFENSAI" className="h-7 w-auto" />
-      <AgentsVideo className="mt-6 w-full max-w-xs" />
-      <h1 className="mt-4 text-balance text-center text-3xl font-semibold md:text-5xl">Six landing page concepts</h1>
+      <h1 className="mt-6 text-balance text-center text-3xl font-semibold md:text-5xl">Breaches are chains, not findings</h1>
+      <p className="mt-3 max-w-xl text-pretty text-center text-muted-foreground">
+        Watch how OFFENSAI&apos;s agents find, validate and prioritize the paths attackers actually take.
+      </p>
+      <VideoPlayer className="mt-8 max-w-5xl" />
+      <AgentsVideo className="mt-16 w-full max-w-[14rem]" />
+      <h2 className="mt-4 text-balance text-center text-2xl font-semibold md:text-4xl">Six landing page concepts</h2>
       <p className="mt-3 max-w-xl text-pretty text-center text-muted-foreground">
         Same product, six ways to get the why and the how across. All are about chains and paths.
       </p>
@@ -36,12 +42,6 @@ export default function Home() {
           </li>
         ))}
       </ul>
-      <Link
-        href="/explainer"
-        className="mt-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-5 py-2.5 text-sm font-semibold transition-colors hover:border-primary/60"
-      >
-        Watch the 60 second explainer <ArrowRight className="size-4" aria-hidden />
-      </Link>
     </main>
   )
 }
