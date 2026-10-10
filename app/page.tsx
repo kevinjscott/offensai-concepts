@@ -36,6 +36,12 @@ export default function Home() {
           </li>
         ))}
       </ul>
+      <Link
+        href="/explainer"
+        className="mt-8 inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-5 py-2.5 text-sm font-semibold transition-colors hover:border-primary/60"
+      >
+        Watch the 60 second explainer <ArrowRight className="size-4" aria-hidden />
+      </Link>
     </main>
   )
 }
