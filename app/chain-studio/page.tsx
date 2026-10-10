@@ -7,7 +7,7 @@ import { StageTabs } from '@/components/studio/stage-tabs'
 import { StudioHero } from '@/components/studio/studio-hero'
 
 export const metadata: Metadata = {
-  title: 'OFFENSAI | One finding is a dot. A chain is a breach.',
+  title: 'OFFENSAI | Findings are noise. Chains are breaches.',
   description:
     'Watch OFFENSAI build, run and prove a multi-step cloud attack chain. Interactive walkthrough of how validation works.',
 }
@@ -28,7 +28,7 @@ export default function ChainStudio() {
       <StageTabs />
       <EvasionSection />
       <FaqSection />
-      <ClosingCta headline="Stop guessing which dots matter." />
+      <ClosingCta headline="Stop guessing which risks matter." />
       <SiteFooter />
     </main>
   )

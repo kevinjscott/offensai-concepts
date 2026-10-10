@@ -31,8 +31,8 @@ export function DotsHero() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-balance text-5xl font-semibold leading-[1.04] tracking-tight md:text-6xl"
           >
-            Findings are dots.
-            <span className="text-gradient block">Attackers draw the line.</span>
+            Detection guesses at risk.
+            <span className="text-gradient block">OFFENSAI proves it.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -40,8 +40,8 @@ export function DotsHero() {
             transition={{ duration: 0.8, delay: 0.25 }}
             className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-foreground/80"
           >
-            OFFENSAI watches your live cloud, chains the dots into real attack paths, and proves which ones actually
-            work. Proof, not alerts.
+            OFFENSAI continuously chains live cloud changes into real attack paths, then safely executes them to prove
+            exploitability. Mirror how today&apos;s attackers operate, end to end.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 16 }}

@@ -1,5 +1,5 @@
 export const concepts = [
-  { href: '/dots-to-paths', label: 'Dots to Paths', short: '1', blurb: 'Scroll story. Why paths beat findings.' },
+  { href: '/dots-to-paths', label: 'Noise to Paths', short: '1', blurb: 'Scroll story. From noise to proof.' },
   { href: '/chain-studio', label: 'Chain Studio', short: '2', blurb: 'Interactive. How a chain is built and proven.' },
   { href: '/cloud-in-motion', label: 'Cloud in Motion', short: '3', blurb: 'Time. Why a snapshot is always out of date.' },
   { href: '/incident-replay', label: 'Incident Replay', short: '4', blurb: 'Replay a real 2026 agent intrusion hop by hop.' },

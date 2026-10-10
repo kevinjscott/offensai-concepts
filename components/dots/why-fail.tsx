@@ -89,7 +89,7 @@ const reasons = [
 export function WhyFail() {
   return (
     <section className="px-6 py-24 md:py-32">
-      <SectionHeading eyebrow="Why dots are not enough" title="Security teams see the noise. Attackers see the paths.">
+      <SectionHeading eyebrow="Why existing tools fall short" title="Security teams see the noise. Attackers see the paths.">
         Detection tools guess at risk. As AI compresses time to exploit, probability is no longer enough.
       </SectionHeading>
       <ul className="mx-auto mt-14 grid max-w-6xl gap-4 lg:grid-cols-3">

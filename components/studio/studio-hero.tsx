@@ -29,8 +29,8 @@ export function StudioHero() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="text-balance text-5xl font-semibold leading-[1.04] tracking-tight md:text-7xl"
         >
-          One finding is a dot.
-          <span className="text-gradient block">A chain is a breach.</span>
+          Findings are noise.
+          <span className="text-gradient block">Chains are breaches.</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
