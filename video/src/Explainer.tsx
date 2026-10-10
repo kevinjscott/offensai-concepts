@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { AbsoluteFill, Audio, Sequence, cancelRender, continueRender, delayRender, staticFile } from 'remotion'
+import { AbsoluteFill, Audio, cancelRender, continueRender, delayRender, staticFile } from 'remotion'
 import { Backdrop, Captions, Scene, Vignette } from './ui'
-import { lines } from './cues'
 import { sec } from './theme'
 import { ChainScene, Findings, Hook, Machines } from './scenes/Act1'
 import { Agents, GraphCompose, Validate } from './scenes/Act2'
@@ -76,17 +75,7 @@ export const Explainer: React.FC<{ withAudio?: boolean }> = ({ withAudio = true 
       <Vignette />
       <Captions />
 
-      {withAudio && (
-        <>
-          {lines.map((l) => (
-            <Sequence key={l.id} from={l.startFrame} durationInFrames={l.durFrames + 6} layout="none">
-              <Audio src={staticFile(l.file)} volume={0.8} />
-            </Sequence>
-          ))}
-          <Audio src={staticFile('audio/music.wav')} volume={0.85} />
-          <Audio src={staticFile('audio/sfx.wav')} volume={0.9} />
-        </>
-      )}
+      {withAudio && <Audio src={staticFile('audio/mix.mp3')} />}
     </AbsoluteFill>
   )
 }
