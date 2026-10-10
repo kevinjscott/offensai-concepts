@@ -9,7 +9,7 @@ const INCIDENT_HOURS = 13
 
 export function MachineSpeed() {
   return (
-    <section className="px-6 py-20 md:py-28">
+    <section id="speed" className="px-6 py-20 md:py-28">
       <SectionHeading eyebrow="Why now" title="Chaining is getting cheap">
         Attackers no longer need patience or a large team to try thousands of routes. Defenders need to see the same
         routes first.

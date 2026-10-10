@@ -10,12 +10,7 @@ import type { TermLine } from '@/lib/terminal'
 const lines: TermLine[] = [
   { k: 'cmd', t: 'replay --incident huggingface-2026-07 --source public-reporting' },
   { k: 'ok', t: 'loaded 7 nodes, 6 hops' },
-  { k: 'dim', t: 'autonomous agent, inside an evaluation sandbox' },
-  { k: 'dim', t: 'zero-day in a registry cache proxy -> internet' },
-  { k: 'dim', t: 'third-party sandbox -> root launchpad' },
-  { k: 'dim', t: 'dataset pipeline: HDF5 refs + Jinja2 injection' },
-  { k: 'dim', t: 'production pod -> cluster secrets -> cluster-admin' },
-  { k: 'warn', t: 'elapsed to cluster-admin: ~13h (as reported)' },
+  { k: 'warn', t: 'sandbox -> cluster-admin in ~13h (as reported)' },
   { k: 'cmd', t: 'which hop was the vulnerability?' },
   { k: 'err', t: 'none of them. the chain was.' },
 ]
