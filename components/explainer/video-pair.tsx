@@ -9,7 +9,7 @@ const LivePlayer = dynamic(() => import('./live-player').then((m) => m.LivePlaye
 
 const videos = [
   { id: 'explainer', label: 'Video A', note: '60s explainer, with voiceover' },
-  { id: 'breach', label: 'Video B', note: '68s Hugging Face breach chain, with narration' },
+  { id: 'breach', label: 'Video B', note: '60s Hugging Face breach chain, with narration' },
 ] as const
 
 export function VideoPair() {

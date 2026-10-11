@@ -2,10 +2,11 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 
 const SR = 44100
-const SECONDS = 68
+const SECONDS = 60
 const N = SR * SECONDS
-const VOICE_GAIN = 0.8
-const MUSIC_GAIN = 0.6
+const VOICE_GAIN = 0.9
+const MUSIC_GAIN = 0.4
+const MUSIC_DUCKED = 0.16
 
 type Wav = { rate: number; channels: number; frames: number; sample: (ch: number, i: number) => number }
 
@@ -34,14 +35,43 @@ function add(wav: Wav, atSeconds: number, gain: number, loop = false) {
   }
 }
 
-const timeline = JSON.parse(readFileSync('src/timeline-breach.json', 'utf8')) as { lines: { file: string; start: number }[] }
-add(readWav('public/audio/music.wav'), 0, MUSIC_GAIN, true)
+const timeline = JSON.parse(readFileSync('src/timeline-breach.json', 'utf8')) as { lines: { file: string; start: number; dur: number }[] }
+
+// Music is added to a separate bed so it can be ducked under the voice before summing.
+const musicL = new Float32Array(N)
+const musicR = new Float32Array(N)
+const music = readWav('public/audio/music.wav')
+const musicLen = Math.min(N, Math.floor((music.frames * SR) / music.rate))
+for (let k = 0; k < musicLen; k++) {
+  const src = Math.min(music.frames - 1, Math.floor((k * music.rate) / SR))
+  musicL[k] = music.sample(0, src)
+  musicR[k] = music.sample(1, src)
+}
+
+// Voice-activity envelope with fast attack and slow release, so the bed dips smoothly under each line.
+const target = new Float32Array(N).fill(MUSIC_GAIN)
+for (const line of timeline.lines) {
+  const a = Math.max(0, Math.round((line.start - 0.1) * SR))
+  const b = Math.min(N, Math.round((line.start + line.dur + 0.15) * SR))
+  for (let k = a; k < b; k++) target[k] = MUSIC_DUCKED
+}
+const attack = 1 - Math.exp(-1 / (SR * 0.12))
+const release = 1 - Math.exp(-1 / (SR * 0.6))
+let env: number = MUSIC_GAIN
+const lastLine = timeline.lines[timeline.lines.length - 1]
+const outroStart = (lastLine.start + lastLine.dur) * SR
+for (let i = 0; i < N; i++) {
+  env += (target[i] - env) * (target[i] < env ? attack : release)
+  // After the last word, fade the music linearly to silence by the end of the track.
+  const outro = i < outroStart ? 1 : Math.max(0, 1 - (i - outroStart) / (N - outroStart))
+  left[i] += musicL[i] * env * outro
+  right[i] += musicR[i] * env * outro
+}
 for (const line of timeline.lines) add(readWav(`public/${line.file}`), line.start, VOICE_GAIN)
 
 const fadeIn = SR * 1.5
-const fadeOut = SR * 3
 for (let i = 0; i < N; i++) {
-  const g = Math.min(1, i / fadeIn, (N - i) / fadeOut)
+  const g = Math.min(1, i / fadeIn)
   left[i] *= g
   right[i] *= g
 }

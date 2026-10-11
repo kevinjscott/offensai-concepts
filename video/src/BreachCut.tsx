@@ -5,11 +5,12 @@ import { useBrandFont } from './Explainer'
 import { C, FONT, FPS, MONO, easeInOut, easeOut, rand, ramp, sec } from './theme'
 import timeline from './timeline-breach.json'
 
-export const BREACH_DURATION = 68 * FPS
+export const BREACH_DURATION = 60 * FPS
 
 type Line = { id: string; caption: string; start: number; dur: number }
 const lines = timeline.lines as Line[]
 const at = (id: string) => (lines.find((l) => l.id === id) as Line).start
+const durOf = (id: string) => (lines.find((l) => l.id === id) as Line).dur
 
 const useTime = () => useCurrentFrame() / FPS
 
@@ -93,12 +94,12 @@ const IncidentScene: React.FC = () => {
 const HOPS = [
   { t: at('b3'), label: 'Sandbox escape', sub: 'Zero-day in a package cache proxy' },
   { t: at('b4'), label: 'Launchpad', sub: 'Third-party code sandbox' },
-  { t: at('b5') + 0.3, label: 'File read', sub: 'HDF5 external storage read' },
-  { t: at('b5') + 2.9, label: 'Template injection', sub: 'Jinja2 in the data loader' },
+  { t: at('b5') + durOf('b5') * 0.06, label: 'File read', sub: 'HDF5 external storage read' },
+  { t: at('b5') + durOf('b5') * 0.56, label: 'Template injection', sub: 'Jinja2 in the data loader' },
   { t: at('b6'), label: 'Code execution', sub: 'Production Kubernetes pod' },
   { t: at('b7'), label: 'Cloud credentials', sub: 'Metadata and service tokens' },
-  { t: at('b7') + 1.6, label: 'Secret store', sub: 'Production secrets' },
-  { t: at('b7') + 3.1, label: 'Mesh VPN key', sub: 'Auth key from the secret store' },
+  { t: at('b7') + durOf('b7') * 0.35, label: 'Secret store', sub: 'Production secrets' },
+  { t: at('b7') + durOf('b7') * 0.67, label: 'Mesh VPN key', sub: 'Auth key from the secret store' },
   { t: at('b8'), label: '181 nodes enrolled', sub: 'Pivot into the corporate network' },
 ]
 
@@ -121,7 +122,7 @@ const ChainScene: React.FC = () => {
   const pulse = t > bind ? 0.5 + 0.5 * Math.sin((t - bind) * 5) : 0
   return (
     <AbsoluteFill>
-      <Tag t={t} start={9.4}>
+      <Tag t={t} start={at('b3') - 0.25}>
         HOW THE CHAIN RAN
       </Tag>
       <svg width={1920} height={1080} style={{ position: 'absolute', inset: 0 }}>
@@ -491,22 +492,22 @@ export const BreachCut: React.FC<{ withAudio?: boolean }> = ({ withAudio = true 
   return (
     <AbsoluteFill style={{ background: '#000' }}>
       <Stage />
-      <Scene from={0} to={9.5} fadeIn={0} fadeOut={10}>
+      <Scene from={0} to={at('b3') - 0.15} fadeIn={0} fadeOut={10}>
         <IncidentScene />
       </Scene>
-      <Scene from={9.2} to={39.9} fadeIn={10} fadeOut={10}>
+      <Scene from={at('b3') - 0.45} to={at('b10') - 0.41} fadeIn={10} fadeOut={10}>
         <ChainScene />
       </Scene>
-      <Scene from={39.6} to={43.8} fadeIn={10} fadeOut={10}>
+      <Scene from={at('b10') - 0.71} to={at('b11') - 0.13} fadeIn={10} fadeOut={10}>
         <QuestionScene />
       </Scene>
-      <Scene from={43.5} to={56.5} fadeIn={10} fadeOut={10}>
+      <Scene from={at('b11') - 0.43} to={at('b14') - 0.2} fadeIn={10} fadeOut={10}>
         <OffensaiScene />
       </Scene>
-      <Scene from={56.2} to={62.0} fadeIn={10} fadeOut={10}>
+      <Scene from={at('b14') - 0.5} to={at('b16') - 0.35} fadeIn={10} fadeOut={10}>
         <BreakScene />
       </Scene>
-      <Scene from={61.7} to={68} fadeIn={10} fadeOut={0}>
+      <Scene from={at('b16') - 0.65} to={BREACH_DURATION / FPS} fadeIn={10} fadeOut={0}>
         <CloseScene />
       </Scene>
       <BreachCaptions />

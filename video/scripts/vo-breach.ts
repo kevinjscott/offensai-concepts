@@ -1,6 +1,7 @@
 import { generateSpeech } from 'ai'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
 
 const MODEL = 'google/gemini-3.8-flash-tts'
 const VOICE = 'Charon'
@@ -12,18 +13,19 @@ interface Line {
   say: string
   caption: string
   gap: number
+  speed?: number
 }
 
 const LINES: Line[] = [
-  { id: 'b1', say: 'July twenty twenty-six. An autonomous AI agent breaches Hugging Face.', caption: 'July 2026. An autonomous AI agent breaches Hugging Face.', gap: 0.6 },
-  { id: 'b2', say: 'Not with one critical bug. With a chain.', caption: 'Not with one critical bug. With a chain.', gap: 0.4 },
-  { id: 'b3', say: 'A zero-day in a package registry cache proxy. Out of its sandbox.', caption: 'A zero-day in a package cache proxy. Out of the sandbox.', gap: 0.6 },
-  { id: 'b4', say: 'A third-party sandbox, used as a launchpad.', caption: 'A third-party sandbox, used as a launchpad.', gap: 0.25 },
-  { id: 'b5', say: 'Two flaws in a dataset pipeline. A file read, and a template injection.', caption: 'Two flaws in a dataset pipeline. A file read, and a template injection.', gap: 0.3 },
-  { id: 'b6', say: 'Code execution inside a production pod.', caption: 'Code execution inside a production pod.', gap: 0.25 },
-  { id: 'b7', say: 'Cloud credentials. A secret store. A mesh VPN key.', caption: 'Cloud credentials. A secret store. A mesh VPN key.', gap: 0.3 },
-  { id: 'b8', say: 'A hundred and eighty-one nodes, enrolled into the corporate network.', caption: '181 nodes enrolled into the corporate network.', gap: 0.3 },
-  { id: 'b9', say: 'Each hop looks small on its own. Together, they are a breach.', caption: 'Each hop looks small on its own. Together, a breach.', gap: 0.5 },
+  { id: 'b1', say: 'July twenty twenty-six. An autonomous AI agent breaches Hugging Face.', caption: 'July 2026. An autonomous AI agent breaches Hugging Face.', gap: 0.4, speed: 1.2 },
+  { id: 'b2', say: 'Not with one critical bug. With a chain.', caption: 'Not with one critical bug. With a chain.', gap: 0.15, speed: 1.2 },
+  { id: 'b3', say: 'A zero-day in a package registry cache proxy. Out of its sandbox.', caption: 'A zero-day in a package cache proxy. Out of the sandbox.', gap: 0.25, speed: 1.2 },
+  { id: 'b4', say: 'A third-party sandbox, used as a launchpad.', caption: 'A third-party sandbox, used as a launchpad.', gap: 0.1, speed: 1.2 },
+  { id: 'b5', say: 'Two flaws in a dataset pipeline. A file read, and a template injection.', caption: 'Two flaws in a dataset pipeline. A file read, and a template injection.', gap: 0.1, speed: 1.2 },
+  { id: 'b6', say: 'Code execution inside a production pod.', caption: 'Code execution inside a production pod.', gap: 0.1, speed: 1.2 },
+  { id: 'b7', say: 'Cloud credentials. A secret store. A mesh VPN key.', caption: 'Cloud credentials. A secret store. A mesh VPN key.', gap: 0.1, speed: 1.2 },
+  { id: 'b8', say: 'A hundred and eighty-one nodes, enrolled into the corporate network.', caption: '181 nodes enrolled into the corporate network.', gap: 0.1, speed: 1.2 },
+  { id: 'b9', say: 'Each hop looks small on its own. Together, they are a breach.', caption: 'Each hop looks small on its own. Together, a breach.', gap: 0.25, speed: 1.15 },
   { id: 'b10', say: 'Would you know if your cloud has a chain like this?', caption: 'Would you know if your cloud has a chain like this?', gap: 0.7 },
   { id: 'b11', say: 'Offens A.I. agents map your cloud as a graph.', caption: 'OFFENSAI agents map your cloud as a graph.', gap: 0.7 },
   { id: 'b12', say: 'Compose attack chains across clouds, pipelines, and clusters.', caption: 'Compose attack chains across clouds, pipelines, and clusters.', gap: 0.25 },
@@ -93,11 +95,21 @@ for (const line of LINES) {
     await writeFile(cache, raw)
   }
   const trimmed = trimWav(raw)
-  await writeFile(file, silenceTailNoise(trimmed.wav))
+  const clean = silenceTailNoise(trimmed.wav)
+  const speed = line.speed ?? 1
+  let dur = trimmed.seconds
+  if (speed !== 1) {
+    await writeFile(`${OUT}/.tmp-${line.id}.wav`, clean)
+    execFileSync('pnpm', ['exec', 'remotion', 'ffmpeg', '-y', '-i', `${OUT}/.tmp-${line.id}.wav`, '-filter:a', `atempo=${speed}`, file], { stdio: 'ignore' })
+    const sped = await readFile(file)
+    dur = (sped.length - sped.indexOf(Buffer.from('data')) - 8) / 2 / sped.readUInt16LE(22) / sped.readUInt32LE(24)
+  } else {
+    await writeFile(file, clean)
+  }
   cursor += line.gap
-  timeline.push({ id: line.id, caption: line.caption, file: `vo-breach/${line.id}.wav`, start: +cursor.toFixed(3), dur: +trimmed.seconds.toFixed(3) })
-  console.log(line.id.padEnd(5), `start ${cursor.toFixed(2)}s`.padEnd(14), `dur ${trimmed.seconds.toFixed(2)}s`)
-  cursor += trimmed.seconds
+  timeline.push({ id: line.id, caption: line.caption, file: `vo-breach/${line.id}.wav`, start: +cursor.toFixed(3), dur: +dur.toFixed(3) })
+  console.log(line.id.padEnd(5), `start ${cursor.toFixed(2)}s`.padEnd(14), `dur ${dur.toFixed(2)}s`)
+  cursor += dur
 }
 
 await writeFile('src/timeline-breach.json', JSON.stringify({ fps: FPS, total: +cursor.toFixed(3), lines: timeline }, null, 2))
