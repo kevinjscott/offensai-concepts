@@ -1,6 +1,6 @@
 {
   "fps": 30,
-  "total": 58.389,
+  "total": 51.349,
   "lines": [
     {
       "id": "b1",
@@ -18,100 +18,100 @@
     },
     {
       "id": "b3",
-      "caption": "A zero-day in a package cache proxy. Out of the sandbox.",
+      "caption": "A zero-day in a cache proxy. Sandbox escape.",
       "file": "vo-breach/b3.wav",
-      "start": 7.473,
-      "dur": 3.585
+      "start": 7.323,
+      "dur": 2.637
     },
     {
       "id": "b4",
-      "caption": "A third-party sandbox, used as a launchpad.",
+      "caption": "A third-party sandbox as a launchpad.",
       "file": "vo-breach/b4.wav",
-      "start": 11.158,
-      "dur": 2.568
+      "start": 10.011,
+      "dur": 2.067
     },
     {
       "id": "b5",
-      "caption": "Two flaws in a dataset pipeline. A file read, and a template injection.",
+      "caption": "A file read. A template injection.",
       "file": "vo-breach/b5.wav",
-      "start": 13.827,
-      "dur": 4.285
+      "start": 12.128,
+      "dur": 1.937
     },
     {
       "id": "b6",
-      "caption": "Code execution inside a production pod.",
+      "caption": "Code execution in a production pod.",
       "file": "vo-breach/b6.wav",
-      "start": 18.211,
-      "dur": 2.173
+      "start": 14.115,
+      "dur": 1.822
     },
     {
       "id": "b7",
-      "caption": "Cloud credentials. A secret store. A mesh VPN key.",
+      "caption": "Cloud credentials. Secrets. A VPN key.",
       "file": "vo-breach/b7.wav",
-      "start": 20.485,
-      "dur": 3.81
+      "start": 15.987,
+      "dur": 2.701
     },
     {
       "id": "b8",
-      "caption": "181 nodes enrolled into the corporate network.",
+      "caption": "181 nodes enrolled in the corporate network.",
       "file": "vo-breach/b8.wav",
-      "start": 24.394,
-      "dur": 3.177
+      "start": 18.738,
+      "dur": 1.794
     },
     {
       "id": "b9",
       "caption": "Each hop looks small on its own. Together, a breach.",
       "file": "vo-breach/b9.wav",
-      "start": 27.822,
+      "start": 20.782,
       "dur": 3.834
     },
     {
       "id": "b10",
       "caption": "Would you know if your cloud has a chain like this?",
       "file": "vo-breach/b10.wav",
-      "start": 32.356,
+      "start": 25.316,
       "dur": 2.917
     },
     {
       "id": "b11",
       "caption": "OFFENSAI agents map your cloud as a graph.",
       "file": "vo-breach/b11.wav",
-      "start": 35.973,
+      "start": 28.933,
       "dur": 3.217
     },
     {
       "id": "b12",
       "caption": "Compose attack chains across clouds, pipelines, and clusters.",
       "file": "vo-breach/b12.wav",
-      "start": 39.44,
+      "start": 32.4,
       "dur": 4.362
     },
     {
       "id": "b13",
       "caption": "Then prove each hop is exploitable. Safely, on your command.",
       "file": "vo-breach/b13.wav",
-      "start": 44.052,
+      "start": 37.012,
       "dur": 4.195
     },
     {
       "id": "b14",
       "caption": "You see the chain before an attacker does.",
       "file": "vo-breach/b14.wav",
-      "start": 48.747,
+      "start": 41.707,
       "dur": 2.717
     },
     {
       "id": "b15",
       "caption": "Fix the one hop that breaks it.",
       "file": "vo-breach/b15.wav",
-      "start": 51.764,
+      "start": 44.724,
       "dur": 2.025
     },
     {
       "id": "b16",
       "caption": "OFFENSAI. See your cloud the way attackers do.",
       "file": "vo-breach/b16.wav",
-      "start": 54.389,
+      "start": 47.35,
       "dur": 3.999
     }
   ]

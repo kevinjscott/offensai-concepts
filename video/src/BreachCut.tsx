@@ -5,7 +5,7 @@ import { useBrandFont } from './Explainer'
 import { C, FONT, FPS, MONO, easeInOut, easeOut, rand, ramp, sec } from './theme'
 import timeline from './timeline-breach.json'
 
-export const BREACH_DURATION = 60 * FPS
+export const BREACH_DURATION = Math.ceil(timeline.total + 1.8) * FPS
 
 type Line = { id: string; caption: string; start: number; dur: number }
 const lines = timeline.lines as Line[]

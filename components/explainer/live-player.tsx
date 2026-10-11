@@ -1,6 +1,7 @@
 'use client'
 
 import { Player } from '@remotion/player'
+import { Play } from 'lucide-react'
 import { Explainer } from '../../video/src/Explainer'
 import { BreachCut, BREACH_DURATION } from '../../video/src/BreachCut'
 import { DURATION, FPS, H, W } from '../../video/src/theme'
@@ -28,8 +29,11 @@ export function LivePlayer({ variant }: { variant: keyof typeof variants }) {
       posterFillMode="player-size"
       showPosterWhenUnplayed
       renderPoster={() => (
-        <div className="flex size-full items-center justify-center bg-black px-4 text-center text-balance text-lg font-semibold text-white md:text-2xl">
-          {v.poster}
+        <div className="flex size-full flex-col items-center justify-center gap-5 bg-[radial-gradient(ellipse_70%_80%_at_50%_100%,rgb(76_147_255/0.28),transparent_70%),linear-gradient(180deg,#0d1424,#05070d)] px-6 text-center">
+          <span className="flex size-16 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur">
+            <Play className="ml-1 size-7 fill-white text-white" aria-hidden />
+          </span>
+          <span className="max-w-md text-balance text-lg font-semibold text-white md:text-2xl">{v.poster}</span>
         </div>
       )}
       initiallyMuted={false}

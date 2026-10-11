@@ -2,11 +2,15 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 
 const SR = 44100
-const SECONDS = 60
-const N = SR * SECONDS
 const VOICE_GAIN = 0.9
-const MUSIC_GAIN = 0.4
-const MUSIC_DUCKED = 0.16
+const MUSIC_GAIN = 0.5
+const MUSIC_DUCKED = 0.17
+const SFX_GAIN = 0.55
+const SFX_DUCKED = 0.38
+
+const timeline = JSON.parse(readFileSync('src/timeline-breach.json', 'utf8')) as { total: number; lines: { file: string; start: number; dur: number }[] }
+const SECONDS = Math.ceil(timeline.total + 1.8)
+const N = SR * SECONDS
 
 type Wav = { rate: number; channels: number; frames: number; sample: (ch: number, i: number) => number }
 
@@ -35,7 +39,6 @@ function add(wav: Wav, atSeconds: number, gain: number, loop = false) {
   }
 }
 
-const timeline = JSON.parse(readFileSync('src/timeline-breach.json', 'utf8')) as { lines: { file: string; start: number; dur: number }[] }
 
 // Music is added to a separate bed so it can be ducked under the voice before summing.
 const musicL = new Float32Array(N)
@@ -48,16 +51,31 @@ for (let k = 0; k < musicLen; k++) {
   musicR[k] = music.sample(1, src)
 }
 
+const sfx = readWav('public/audio/sfx-breach.wav')
+const sfxL = new Float32Array(N)
+const sfxR = new Float32Array(N)
+const sfxLen = Math.min(N, Math.floor((sfx.frames * SR) / sfx.rate))
+for (let k = 0; k < sfxLen; k++) {
+  const src = Math.min(sfx.frames - 1, Math.floor((k * sfx.rate) / SR))
+  sfxL[k] = sfx.sample(0, src)
+  sfxR[k] = sfx.sample(1, src)
+}
+
 // Voice-activity envelope with fast attack and slow release, so the bed dips smoothly under each line.
 const target = new Float32Array(N).fill(MUSIC_GAIN)
+const voiced = new Float32Array(N)
 for (const line of timeline.lines) {
   const a = Math.max(0, Math.round((line.start - 0.1) * SR))
   const b = Math.min(N, Math.round((line.start + line.dur + 0.15) * SR))
-  for (let k = a; k < b; k++) target[k] = MUSIC_DUCKED
+  for (let k = a; k < b; k++) {
+    target[k] = MUSIC_DUCKED
+    voiced[k] = 1
+  }
 }
 const attack = 1 - Math.exp(-1 / (SR * 0.12))
 const release = 1 - Math.exp(-1 / (SR * 0.6))
 let env: number = MUSIC_GAIN
+let sfxEnv = SFX_GAIN
 const lastLine = timeline.lines[timeline.lines.length - 1]
 const outroStart = (lastLine.start + lastLine.dur) * SR
 for (let i = 0; i < N; i++) {
@@ -66,6 +84,10 @@ for (let i = 0; i < N; i++) {
   const outro = i < outroStart ? 1 : Math.max(0, 1 - (i - outroStart) / (N - outroStart))
   left[i] += musicL[i] * env * outro
   right[i] += musicR[i] * env * outro
+  const sTarget = voiced[i] ? SFX_DUCKED : SFX_GAIN
+  sfxEnv += (sTarget - sfxEnv) * (sTarget < sfxEnv ? attack : release)
+  left[i] += sfxL[i] * sfxEnv
+  right[i] += sfxR[i] * sfxEnv
 }
 for (const line of timeline.lines) add(readWav(`public/${line.file}`), line.start, VOICE_GAIN)
 
