@@ -7,9 +7,9 @@ import { ProofShots } from '@/components/dots/proof-shots'
 import { WhyFail } from '@/components/dots/why-fail'
 
 export const metadata: Metadata = {
-  title: 'OFFENSAI | Findings are dots. Attackers draw the line.',
+  title: 'OFFENSAI | Detection guesses at risk. OFFENSAI proves it.',
   description:
-    'OFFENSAI chains live cloud changes into real attack paths and proves which ones are exploitable.',
+    'Specialized AI for cloud exploit validation. OFFENSAI chains live cloud changes into real attack paths, then safely executes them to prove exploitability.',
 }
 
 export default function DotsToPaths() {

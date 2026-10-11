@@ -56,7 +56,7 @@ export function ChainConsole() {
           <span className="size-2.5 rounded-full bg-muted-foreground/30" />
           <span className="size-2.5 rounded-full bg-muted-foreground/30" />
         </div>
-        <p className="font-mono text-xs text-muted-foreground">attack-studio / validation-run</p>
+        <p className="font-mono text-xs text-muted-foreground">ATTACKSTUDIO / campaign</p>
         <div role="tablist" aria-label="Scenario" className="ml-auto flex gap-1 rounded-xl border border-border bg-secondary p-1">
           {chains.map((c, i) => (
             <button
@@ -90,7 +90,7 @@ export function ChainConsole() {
 
         <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
           <div className="min-h-44 rounded-2xl border border-border bg-black/60 p-4 font-mono text-xs leading-relaxed">
-            <p className="mb-3 text-muted-foreground">$ offensai validate --scenario {chain.id} --read-only</p>
+            <p className="mb-3 text-muted-foreground">Agent O: running the approved path &quot;{chain.name}&quot;, read-only</p>
             <AnimatePresence initial={false}>
               {evidence.map((h, i) => (
                 <motion.p
@@ -121,7 +121,7 @@ export function ChainConsole() {
                 </p>
                 <p className="mt-4 text-lg font-semibold leading-snug">{chain.impact}</p>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {last} hops executed with evidence. Remediation guidance attached.
+                  {last} hops executed with evidence. Full report and remediation guidance attached.
                 </p>
               </motion.div>
             ) : (

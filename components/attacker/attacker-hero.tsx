@@ -30,7 +30,7 @@ export function AttackerHero() {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-balance text-5xl font-semibold leading-[1.04] tracking-tight md:text-6xl"
           >
-            You have a leaked key.
+            You have a domain name.
             <span className="text-gradient block">Can you reach the data?</span>
           </motion.h1>
           <motion.p
@@ -39,8 +39,8 @@ export function AttackerHero() {
             transition={{ duration: 0.8, delay: 0.25 }}
             className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-foreground/80"
           >
-            Cloud risk is not a list. It is a maze of identities, roles and trust, and the only way to feel it is to
-            walk it. So walk it, in a simulated account.
+            Start from the outside with no credentials, using only public signals. Cloud attacks unfold as multi-step
+            chains across identities, services and trust, so walk one yourself in a simulated company.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 16 }}

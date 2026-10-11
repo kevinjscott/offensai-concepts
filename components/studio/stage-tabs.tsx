@@ -2,8 +2,8 @@
 
 import { AnimatePresence, motion } from 'motion/react'
 import { Check } from 'lucide-react'
-import { useState } from 'react'
 import { SectionHeading } from '@/components/brand/reveal'
+import { ScrollStage } from '@/components/brand/scroll-stage'
 import { cn } from '@/lib/utils'
 
 const stages = [
@@ -54,20 +54,29 @@ const stages = [
 ]
 
 export function StageTabs() {
-  const [active, setActive] = useState(0)
+  return (
+    <ScrollStage id="how" label="Model, generate, validate, prioritize" heightSvh={380}>
+      {({ progress, jumpTo }) => (
+        <Stages active={Math.min(stages.length - 1, Math.floor(progress * stages.length))} onPick={(i) => jumpTo((i + 0.5) / stages.length)} />
+      )}
+    </ScrollStage>
+  )
+}
+
+function Stages({ active, onPick }: { active: number; onPick: (i: number) => void }) {
   const s = stages[active]
 
   return (
-    <section id="how" className="px-6 py-24 md:py-32">
+    <div>
       <SectionHeading eyebrow="How it works" title="Model. Generate. Validate. Prioritize." />
-      <div className="mx-auto mt-14 grid max-w-6xl gap-6 lg:grid-cols-[320px_1fr]">
+      <div className="mx-auto mt-10 grid max-w-6xl gap-6 lg:grid-cols-[320px_1fr]">
         <div role="tablist" aria-label="Stages" className="flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
           {stages.map((st, i) => (
             <button
               key={st.name}
               role="tab"
               aria-selected={i === active}
-              onClick={() => setActive(i)}
+              onClick={() => onPick(i)}
               className={cn(
                 'relative flex shrink-0 items-center gap-4 rounded-2xl border px-4 py-3 text-left transition-colors lg:py-4',
                 i === active ? 'border-primary/60 bg-accent' : 'border-border bg-card/50 hover:border-primary/30',
@@ -117,6 +126,6 @@ export function StageTabs() {
           </AnimatePresence>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

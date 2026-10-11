@@ -106,4 +106,33 @@ export const crossCloudChain: Chain = {
   impact: 'Two clouds, one chain, no alert in either',
 }
 
-export const chains = [azureChain, awsChain, crossCloudChain]
+// Mirrors the four steps on offensai.com/external-attack-validation: start from a domain, account ID or bucket
+// with no credentials, expand with OSINT, enumerate and classify exposure, then validate the chain.
+export const externalChain: Chain = {
+  id: 'external',
+  name: 'Domain to data lake',
+  cloud: 'External',
+  summary: 'No credentials. Public signals only, until one exposed bucket changes that.',
+  nodes: [
+    { id: 'e0', label: 'Attacker', sub: 'A domain, no credentials', kind: 'attacker', x: 5, y: 30 },
+    { id: 'e1', label: 'Public code repo', sub: 'Leaks account ID and bucket', kind: 'repo', x: 18, y: 70 },
+    { id: 'e2', label: 'Public bucket', sub: 'Key left in a backup file', kind: 'secret', x: 31, y: 30 },
+    { id: 'e3', label: 'IAM user', sub: 'Low privilege', kind: 'identity', x: 44, y: 70 },
+    { id: 'e4', label: 'ci-deploy role', sub: 'AssumeRole allowed', kind: 'role', x: 57, y: 30 },
+    { id: 'e5', label: 'Lambda function', sub: 'PassRole abuse', kind: 'compute', x: 70, y: 70 },
+    { id: 'e6', label: 'Secrets Manager', sub: 'Db credentials', kind: 'secret', x: 83, y: 30 },
+    { id: 'e7', label: 'Data lake', sub: 'Customer records', kind: 'data', x: 95, y: 70 },
+  ],
+  hops: [
+    { title: 'Map the footprint using only public signals', evidence: 'OSINT on the domain found a public repo naming an AWS account ID and a bucket.' },
+    { title: 'Reach the exposed bucket', evidence: 'Bucket listing is public. A backup file is readable.' },
+    { title: 'Use the credential found in the file', evidence: 'sts:GetCallerIdentity succeeded for dev-contractor.' },
+    { title: 'Assume a deploy role', evidence: 'Trust policy allows the user. Session issued.' },
+    { title: 'Pass a stronger role to compute', evidence: 'iam:PassRole permitted to function execution role.' },
+    { title: 'Pull credentials from the secret store', evidence: 'Secret value readable by function role.' },
+    { title: 'Reach the data lake', evidence: 'Bucket listing returned with the recovered credentials.' },
+  ],
+  impact: 'Data lake reachable starting from nothing but a domain name',
+}
+
+export const chains = [externalChain, azureChain, awsChain, crossCloudChain]

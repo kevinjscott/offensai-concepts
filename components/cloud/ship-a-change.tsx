@@ -1,8 +1,8 @@
 'use client'
 
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence, motion, useInView } from 'motion/react'
 import { GitMerge, RotateCcw } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ChainGraph, ChainRail } from '@/components/brand/chain-graph'
 import { SectionHeading } from '@/components/brand/reveal'
 import { azureChain } from '@/lib/chains'
@@ -33,6 +33,17 @@ export function ShipAChange() {
     setStep(1)
     setPhase('revalidating')
   }
+
+  const sectionRef = useRef<HTMLElement>(null)
+  const inView = useInView(sectionRef, { once: true, amount: 0.6 })
+  useEffect(() => {
+    if (!inView) return
+    const t = setTimeout(() => {
+      setStep(1)
+      setPhase('revalidating')
+    }, 1800)
+    return () => clearTimeout(t)
+  }, [inView])
   function revert() {
     setPhase('safe')
     setStep(1)
@@ -47,8 +58,8 @@ export function ShipAChange() {
         : { tone: 'text-ember', text: 'New exploitable path validated. Evidence attached.' }
 
   return (
-    <section id="change" className="px-6 py-24 md:py-32">
-      <SectionHeading eyebrow="Try it" title="One merged line. One new path.">
+    <section ref={sectionRef} id="change" className="px-6 py-24 md:py-32">
+      <SectionHeading eyebrow="Watch it" title="One merged line. One new path.">
         Same chain, same environment. Watch what a single loosened trust rule does, and how validation follows it.
       </SectionHeading>
 

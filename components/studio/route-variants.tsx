@@ -1,14 +1,14 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { useState } from 'react'
 import { SectionHeading } from '@/components/brand/reveal'
+import { ScrollStage } from '@/components/brand/scroll-stage'
 import { cn } from '@/lib/utils'
 
 type Pt = [number, number]
 
-const entry: Pt = [60, 180]
-const goal: Pt = [940, 180]
+const entry: Pt = [60, 170]
+const goal: Pt = [940, 170]
 
 const routes = [
   {
@@ -22,14 +22,14 @@ const routes = [
     id: 'function',
     name: 'Through a function role',
     text: 'A forgotten function is handed a stronger role, which unlocks a secret store.',
-    pts: [entry, [250, 180], [480, 180], [700, 270], goal] as Pt[],
+    pts: [entry, [250, 170], [480, 170], [700, 250], goal] as Pt[],
     generative: true,
   },
   {
     id: 'cloud',
     name: 'Across to another cloud',
     text: 'A federated credential in one cloud becomes a foothold in the next. No single tool sees it.',
-    pts: [entry, [300, 300], [620, 310], goal] as Pt[],
+    pts: [entry, [300, 280], [620, 290], goal] as Pt[],
     generative: true,
   },
 ]
@@ -46,48 +46,51 @@ function toPath(pts: Pt[]) {
 }
 
 export function RouteVariants() {
-  const [mode, setMode] = useState<'script' | 'generative'>('script')
-  const [hover, setHover] = useState<string | null>(null)
-
   return (
-    <section id="generate" className="px-6 py-24 md:py-32">
-      <SectionHeading eyebrow="Generate" title="Same start. Same goal. Different chains.">
-        Static rules replay what someone already wrote down. A generative engine invents new routes across APIs,
-        identities and service relationships.
-      </SectionHeading>
+    <ScrollStage id="generate" label="Replayed scripts versus a generative engine" heightSvh={260}>
+      {({ progress }) => <Body generative={progress >= 0.32} />}
+    </ScrollStage>
+  )
+}
 
-      <div className="mx-auto mt-10 flex w-fit gap-1 rounded-xl border border-border bg-secondary p-1" role="tablist" aria-label="Attack engine type">
-        {(['script', 'generative'] as const).map((m) => (
-          <button
-            key={m}
-            role="tab"
-            aria-selected={mode === m}
-            onClick={() => setMode(m)}
+function Body({ generative }: { generative: boolean }) {
+  return (
+    <div>
+      <SectionHeading eyebrow="Generate" title="Same start. Same goal. Different chains." />
+
+      <div className="mx-auto mt-6 flex w-fit gap-1 rounded-xl border border-border bg-secondary p-1" aria-hidden>
+        {[false, true].map((g) => (
+          <span
+            key={String(g)}
             className={cn(
-              'rounded-lg px-4 py-2 text-sm font-semibold transition-colors',
-              mode === m ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground',
+              'rounded-lg px-4 py-2 text-sm font-semibold transition-colors duration-500',
+              generative === g ? 'bg-primary text-primary-foreground' : 'text-muted-foreground',
             )}
           >
-            {m === 'script' ? 'Replayed script' : 'Generative engine'}
-          </button>
+            {g ? 'Generative engine' : 'Replayed script'}
+          </span>
         ))}
       </div>
+      <p className="mx-auto mt-4 min-h-12 max-w-2xl text-balance text-center text-base leading-relaxed text-muted-foreground md:text-lg" aria-live="polite">
+        {generative
+          ? 'A generative engine invents new routes across APIs, identities and service relationships.'
+          : 'A replayed script follows what someone already wrote down: one route, and every rule library has it.'}
+      </p>
 
-      <div className="mx-auto mt-10 max-w-5xl rounded-3xl border border-border bg-card/50 p-4 md:p-8">
-        <svg viewBox="0 0 1000 360" className="w-full" fill="none" role="img" aria-label="Three routes from an entry point to a crown jewel">
+      <div className="mx-auto mt-4 max-w-4xl rounded-3xl border border-border bg-card/50 p-4 md:p-6">
+        <svg viewBox="0 0 1000 340" className="w-full overflow-visible" fill="none" role="img" aria-label="Routes from an entry point to a crown jewel">
           {routes.map((r) => {
-            const visible = mode === 'generative' || !r.generative
-            const dim = hover && hover !== r.id
+            const visible = generative || !r.generative
             return (
               <g key={r.id}>
                 <motion.path
                   d={toPath(r.pts)}
                   stroke={r.generative ? '#b07cff' : '#4c93ff'}
-                  strokeWidth={hover === r.id ? 4 : 3}
+                  strokeWidth={3}
                   strokeLinecap="round"
                   initial={false}
-                  animate={{ pathLength: visible ? 1 : 0, opacity: visible ? (dim ? 0.25 : 1) : 0 }}
-                  transition={{ duration: 0.9, ease: 'easeInOut', delay: visible && r.generative ? 0.15 : 0 }}
+                  animate={{ pathLength: visible ? 1 : 0, opacity: visible ? 1 : 0 }}
+                  transition={{ duration: 0.9, ease: 'easeInOut', delay: visible && r.generative ? (r.id === 'cloud' ? 0.45 : 0.1) : 0 }}
                 />
                 {r.pts.slice(1, -1).map((p, i) => (
                   <motion.circle
@@ -99,8 +102,8 @@ export function RouteVariants() {
                     stroke={r.generative ? '#b07cff' : '#4c93ff'}
                     strokeWidth={3}
                     initial={false}
-                    animate={{ opacity: visible ? (dim ? 0.25 : 1) : 0, scale: visible ? 1 : 0.4 }}
-                    transition={{ duration: 0.5, delay: visible ? 0.5 + i * 0.12 : 0 }}
+                    animate={{ opacity: visible ? 1 : 0, scale: visible ? 1 : 0.4 }}
+                    transition={{ duration: 0.5, delay: visible ? 0.5 + i * 0.12 + (r.id === 'cloud' ? 0.35 : 0) : 0 }}
                   />
                 ))}
               </g>
@@ -111,32 +114,30 @@ export function RouteVariants() {
           <circle cx={goal[0]} cy={goal[1]} r={20} fill="#04060d" stroke="#ff5b4a" strokeWidth={3} />
           <circle cx={goal[0]} cy={goal[1]} r={7} fill="#ff5b4a" />
           <text x={entry[0]} y={entry[1] - 36} textAnchor="middle" className="fill-muted-foreground" fontSize={22}>Entry</text>
-          <text x={goal[0]} y={goal[1] - 36} textAnchor="middle" className="fill-muted-foreground" fontSize={22}>Crown jewel</text>
+          <text x={goal[0] + 20} y={goal[1] - 36} textAnchor="end" className="fill-muted-foreground" fontSize={22}>Crown jewel</text>
         </svg>
 
-        <ul className="mt-6 grid gap-3 md:grid-cols-3">
+        <ul className="mt-4 grid gap-3 md:grid-cols-3">
           {routes.map((r) => {
-            const visible = mode === 'generative' || !r.generative
+            const visible = generative || !r.generative
             return (
               <li
                 key={r.id}
-                onMouseEnter={() => setHover(r.id)}
-                onMouseLeave={() => setHover(null)}
                 className={cn(
-                  'rounded-2xl border p-4 transition-all duration-500',
+                  'rounded-2xl border p-3 transition-all duration-500',
                   visible ? 'border-border bg-card' : 'border-dashed border-border/60 opacity-35',
                 )}
               >
-                <p className={cn('mb-1.5 flex items-center gap-2 text-sm font-semibold', r.generative ? 'text-violet' : 'text-primary')}>
+                <p className={cn('mb-1 flex items-center gap-2 text-sm font-semibold', r.generative ? 'text-violet' : 'text-primary')}>
                   <span className={cn('size-2 rounded-full', r.generative ? 'bg-violet' : 'bg-primary')} aria-hidden />
                   {r.name}
                 </p>
-                <p className="text-sm leading-relaxed text-muted-foreground">{r.text}</p>
+                <p className="text-xs leading-relaxed text-muted-foreground md:text-[13px]">{r.text}</p>
               </li>
             )
           })}
         </ul>
       </div>
-    </section>
+    </div>
   )
 }

@@ -1,0 +1,186 @@
+{
+  "fps": 30,
+  "total": 58.002,
+  "lines": [
+    {
+      "id": "hook1",
+      "caption": "Your cloud doesn't have a vulnerability problem.",
+      "file": "vo/hook1.wav",
+      "start": 0.7,
+      "dur": 2.865,
+      "startFrame": 21,
+      "durFrames": 86
+    },
+    {
+      "id": "hook2",
+      "caption": "It has a chain problem.",
+      "file": "vo/hook2.wav",
+      "start": 3.915,
+      "dur": 1.678,
+      "startFrame": 117,
+      "durFrames": 51
+    },
+    {
+      "id": "p1",
+      "caption": "Scanners hand you thousands of findings.",
+      "file": "vo/p1.wav",
+      "start": 6.293,
+      "dur": 2.576,
+      "startFrame": 189,
+      "durFrames": 78
+    },
+    {
+      "id": "p3",
+      "caption": "But attackers don't exploit findings.",
+      "file": "vo/p3.wav",
+      "start": 9.369,
+      "dur": 2.487,
+      "startFrame": 281,
+      "durFrames": 75
+    },
+    {
+      "id": "p4",
+      "caption": "They chain them.",
+      "file": "vo/p4.wav",
+      "start": 12.056,
+      "dur": 1.356,
+      "startFrame": 362,
+      "durFrames": 41
+    },
+    {
+      "id": "c1",
+      "caption": "A pipeline token.",
+      "file": "vo/c1.wav",
+      "start": 13.711,
+      "dur": 1.582,
+      "startFrame": 411,
+      "durFrames": 48
+    },
+    {
+      "id": "c2",
+      "caption": "A loose trust rule.",
+      "file": "vo/c2.wav",
+      "start": 15.394,
+      "dur": 1.683,
+      "startFrame": 462,
+      "durFrames": 51
+    },
+    {
+      "id": "c3",
+      "caption": "A powerful role.",
+      "file": "vo/c3.wav",
+      "start": 17.176,
+      "dur": 1.793,
+      "startFrame": 515,
+      "durFrames": 54
+    },
+    {
+      "id": "c4",
+      "caption": "A forgotten secret.",
+      "file": "vo/c4.wav",
+      "start": 19.07,
+      "dur": 1.702,
+      "startFrame": 572,
+      "durFrames": 52
+    },
+    {
+      "id": "c5",
+      "caption": "Your production data.",
+      "file": "vo/c5.wav",
+      "start": 20.872,
+      "dur": 1.477,
+      "startFrame": 626,
+      "durFrames": 45
+    },
+    {
+      "id": "m1",
+      "caption": "Now machines walk those chains faster than any team can review.",
+      "file": "vo/m1.wav",
+      "start": 22.899,
+      "dur": 3.961,
+      "startFrame": 687,
+      "durFrames": 119
+    },
+    {
+      "id": "s1",
+      "caption": "OFFENSAI sends autonomous agents to think like an attacker.",
+      "file": "vo/s1.wav",
+      "start": 27.61,
+      "dur": 3.811,
+      "startFrame": 828,
+      "durFrames": 115
+    },
+    {
+      "id": "s2",
+      "caption": "They map your cloud as a graph.",
+      "file": "vo/s2.wav",
+      "start": 31.671,
+      "dur": 2.222,
+      "startFrame": 950,
+      "durFrames": 67
+    },
+    {
+      "id": "s3",
+      "caption": "Compose real attack chains across clouds and pipelines.",
+      "file": "vo/s3.wav",
+      "start": 34.143,
+      "dur": 3.794,
+      "startFrame": 1024,
+      "durFrames": 114
+    },
+    {
+      "id": "s4",
+      "caption": "Then validate each one, safely, on your command.",
+      "file": "vo/s4.wav",
+      "start": 38.186,
+      "dur": 4.043,
+      "startFrame": 1146,
+      "durFrames": 122
+    },
+    {
+      "id": "r1",
+      "caption": "Every path is scored by what's proven exploitable.",
+      "file": "vo/r1.wav",
+      "start": 42.78,
+      "dur": 3.052,
+      "startFrame": 1283,
+      "durFrames": 92
+    },
+    {
+      "id": "r2",
+      "caption": "Not what's merely possible.",
+      "file": "vo/r2.wav",
+      "start": 46.032,
+      "dur": 1.943,
+      "startFrame": 1381,
+      "durFrames": 59
+    },
+    {
+      "id": "o1",
+      "caption": "Fix the one hop that breaks the chain.",
+      "file": "vo/o1.wav",
+      "start": 48.475,
+      "dur": 2.835,
+      "startFrame": 1454,
+      "durFrames": 86
+    },
+    {
+      "id": "o2",
+      "caption": "With evidence your auditors can trust.",
+      "file": "vo/o2.wav",
+      "start": 51.509,
+      "dur": 2.308,
+      "startFrame": 1545,
+      "durFrames": 70
+    },
+    {
+      "id": "end",
+      "caption": "OFFENSAI. See your cloud the way attackers do.",
+      "file": "vo/end.wav",
+      "start": 54.418,
+      "dur": 3.584,
+      "startFrame": 1633,
+      "durFrames": 108
+    }
+  ]
+}

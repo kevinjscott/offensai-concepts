@@ -70,18 +70,18 @@ function SignalVisual() {
 
 const reasons = [
   {
-    title: 'A snapshot of a moving target',
-    text: 'Your cloud changes constantly. Scans and AI red teams analyze a frozen copy, so you defend an environment that no longer exists.',
+    title: 'No persistent attack memory',
+    text: 'Each scan or prompt starts from zero. Without persistent intelligence of live environment signals and current adversary tradecraft, multi-step attack chains cannot be built or evolved.',
     Visual: SnapshotVisual,
   },
   {
-    title: 'Chains outgrow the context window',
-    text: 'Real attacks chain thousands of identities and trust links across clouds. General-purpose LLMs reset each run and never see the whole picture.',
+    title: 'Context windows break on cloud-scale graphs',
+    text: 'Frontier models reason within a session. Real cloud attack paths span millions of relationships and require a persistent graph.',
     Visual: ContextVisual,
   },
   {
-    title: 'Signals, not outcomes',
-    text: 'Detection flags activity but never proves what it enables. Without exploitability, you are left guessing which risks matter.',
+    title: 'No deterministic proof of exploitability',
+    text: 'Frontier models generate answers, not validated outcomes. They cannot prove attack paths, leaving assumptions instead of evidence.',
     Visual: SignalVisual,
   },
 ]
@@ -89,7 +89,7 @@ const reasons = [
 export function WhyFail() {
   return (
     <section className="px-6 py-24 md:py-32">
-      <SectionHeading eyebrow="Why dots are not enough" title="Security teams see the noise. Attackers see the paths.">
+      <SectionHeading eyebrow="Why existing tools fall short" title="Security teams see the noise. Attackers see the paths.">
         Detection tools guess at risk. As AI compresses time to exploit, probability is no longer enough.
       </SectionHeading>
       <ul className="mx-auto mt-14 grid max-w-6xl gap-4 lg:grid-cols-3">
