@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
+import { useEffect, useRef, useState } from 'react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
 import { SectionHeading } from '@/components/brand/reveal'
 import { cn } from '@/lib/utils'
 
@@ -45,17 +45,19 @@ function AgentLoop() {
   const [active, setActive] = useState(0)
   const [auto, setAuto] = useState(true)
   const reduce = useReducedMotion()
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { amount: 0.5 })
 
   useEffect(() => {
-    if (!auto || reduce) return
+    if (!auto || reduce || !inView) return
     const id = setInterval(() => setActive((a) => (a + 1) % loop.length), 4200)
     return () => clearInterval(id)
-  }, [auto, reduce])
+  }, [auto, reduce, inView])
 
   const s = loop[active]
 
   return (
-    <div className="rounded-3xl border border-border bg-card/60 p-5 md:p-8">
+    <div ref={ref} className="rounded-3xl border border-border bg-card/60 p-5 md:p-8">
       <p className="mb-5 text-sm text-muted-foreground">
         Connect discovery, proof, execution, and learning into a loop that improves with every validated attack path.
       </p>
@@ -106,11 +108,23 @@ function AgentLoop() {
 }
 
 function OntologyDemo() {
-  const [uoo, setUoo] = useState(true)
+  const [uoo, setUoo] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, amount: 0.6 })
+  const touched = useRef(false)
+
+  useEffect(() => {
+    if (!inView) return
+    const t = setTimeout(() => {
+      if (!touched.current) setUoo(true)
+    }, 2400)
+    return () => clearTimeout(t)
+  }, [inView])
+
   const d = crossPath.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0]} ${p[1]}`).join(' ')
 
   return (
-    <div className="rounded-3xl border border-border bg-card/60 p-5 md:p-8">
+    <div ref={ref} className="rounded-3xl border border-border bg-card/60 p-5 md:p-8">
       <div role="group" aria-label="Reasoning model" className="mb-5 flex w-fit rounded-xl border border-border bg-secondary p-1">
         {(
           [
@@ -121,7 +135,10 @@ function OntologyDemo() {
           <button
             key={label}
             aria-pressed={uoo === v}
-            onClick={() => setUoo(v)}
+            onClick={() => {
+              touched.current = true
+              setUoo(v)
+            }}
             className={cn(
               'rounded-lg px-3 py-2 text-xs font-semibold transition-colors md:text-sm',
               uoo === v ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground',

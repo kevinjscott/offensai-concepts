@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { animate, useMotionValue } from 'motion/react'
+import { useEffect, useRef, useState } from 'react'
+import { animate, useInView, useMotionValue } from 'motion/react'
 import { SectionHeading } from '@/components/brand/reveal'
 
 const HOPS = 7
@@ -15,7 +15,24 @@ function formatDuration(minutes: number) {
 }
 
 export function PathExplosion() {
-  const [branching, setBranching] = useState(4)
+  const [branching, setBranching] = useState(2)
+  const sectionRef = useRef<HTMLElement>(null)
+  const inView = useInView(sectionRef, { once: true, amount: 0.6 })
+  const userTookOver = useRef(false)
+
+  useEffect(() => {
+    if (!inView) return
+    const ramp = animate(2, 10, {
+      duration: 4,
+      delay: 0.8,
+      ease: 'easeInOut',
+      onUpdate: (v) => {
+        if (!userTookOver.current) setBranching(Math.round(v))
+      },
+    })
+    return () => ramp.stop()
+  }, [inView])
+
   const paths = branching ** HOPS
   const value = useMotionValue(paths)
   const [shown, setShown] = useState(paths)
@@ -30,9 +47,9 @@ export function PathExplosion() {
   }, [paths, value])
 
   return (
-    <section id="explosion" className="px-6 py-20 md:py-28">
+    <section ref={sectionRef} id="explosion" className="px-6 py-20 md:py-28">
       <SectionHeading eyebrow="Why it's hard" title="Every hop multiplies the routes">
-        You found one path in seven moves. Each hop usually offers several onward options. Count how quickly that grows.
+        You found one path in seven moves. Each hop usually offers several onward options. Watch how quickly that grows.
       </SectionHeading>
 
       <div className="mx-auto mt-12 max-w-3xl rounded-3xl border border-border bg-card/60 p-6 md:p-10">
@@ -46,7 +63,10 @@ export function PathExplosion() {
           min={2}
           max={12}
           value={branching}
-          onChange={(e) => setBranching(Number(e.target.value))}
+          onChange={(e) => {
+            userTookOver.current = true
+            setBranching(Number(e.target.value))
+          }}
           className="mt-3 h-1 w-full cursor-pointer accent-primary"
         />
         <p className="mt-2 text-xs text-muted-foreground">Roles you could assume, secrets you could read, services you could reach.</p>

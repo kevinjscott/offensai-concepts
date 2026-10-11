@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'motion/react'
 import { SectionHeading } from '@/components/brand/reveal'
+import { ScrollStage } from '@/components/brand/scroll-stage'
 import { cn } from '@/lib/utils'
 
 type Mode = 'severity' | 'validated'
@@ -41,37 +41,45 @@ const badge: Record<Row['priority'], string> = {
 }
 
 export function TuiPriority() {
-  const [mode, setMode] = useState<Mode>('severity')
+  return (
+    <ScrollStage id="priority" label="Severity order versus validated-path order" heightSvh={230}>
+      {({ progress }) => <PriorityBody mode={progress >= 0.4 ? 'validated' : 'severity'} />}
+    </ScrollStage>
+  )
+}
+
+function PriorityBody({ mode }: { mode: Mode }) {
   const data = sorted(mode)
+  const rankOf = (id: string) => data.findIndex((r) => r.id === id) + 1
 
   return (
-    <section id="priority" className="px-6 py-20 md:py-28">
-      <SectionHeading eyebrow="Prioritize" title="Same findings. Different order.">
-        Sort by raw severity and the loudest item wins. Sort by validated path and the thing an attacker can actually
-        reach comes first.
-      </SectionHeading>
+    <div>
+      <SectionHeading eyebrow="Prioritize" title="Same findings. Different order." />
 
-      <div className="mx-auto mt-12 max-w-4xl">
-        <div role="group" aria-label="Sort order" className="mx-auto mb-5 flex w-fit rounded-xl border border-border bg-card/60 p-1 font-mono text-xs">
+      <div className="mx-auto mt-8 max-w-4xl">
+        <div className="mx-auto mb-3 flex w-fit rounded-xl border border-border bg-card/60 p-1 font-mono text-xs" aria-hidden>
           {(
             [
               ['severity', 'sort: severity'],
               ['validated', 'sort: validated path'],
             ] as const
           ).map(([m, label]) => (
-            <button
+            <span
               key={m}
-              aria-pressed={mode === m}
-              onClick={() => setMode(m)}
               className={cn(
-                'rounded-lg px-4 py-2 transition-colors',
-                mode === m ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground',
+                'rounded-lg px-4 py-2 transition-colors duration-500',
+                mode === m ? 'bg-primary text-primary-foreground' : 'text-muted-foreground',
               )}
             >
               {label}
-            </button>
+            </span>
           ))}
         </div>
+        <p className="mx-auto mb-5 min-h-12 max-w-2xl text-balance text-center text-base leading-relaxed text-muted-foreground md:text-lg" aria-live="polite">
+          {mode === 'severity'
+            ? `Sorted by raw severity, the loudest item wins. The paths an attacker can use sit at #${rankOf('key')} and #${rankOf('oidc')}, below a VM nobody can reach.`
+            : 'Sorted by validated path, what an attacker can actually reach comes first. Both exploitable paths are P0 and the unreachable VM drops to P3.'}
+        </p>
 
         <div className="overflow-hidden rounded-2xl border border-primary/25 bg-ink/90 font-mono text-xs md:text-[13px]">
           <div className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-border bg-secondary/60 px-4 py-2.5 text-[11px] uppercase tracking-widest text-muted-foreground md:grid-cols-[1fr_90px_110px_170px_70px]">
@@ -106,6 +114,6 @@ export function TuiPriority() {
         </div>
         <p className="mt-3 text-center text-xs text-muted-foreground">Illustrative data.</p>
       </div>
-    </section>
+    </div>
   )
 }

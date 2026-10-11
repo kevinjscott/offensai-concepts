@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Pause, Play, RotateCcw } from 'lucide-react'
-import { motion } from 'motion/react'
+import { motion, useInView } from 'motion/react'
 import { ChainGraph, ChainRail } from '@/components/brand/chain-graph'
 import { SectionHeading } from '@/components/brand/reveal'
 import { TermRow } from '@/components/term/term-lines'
@@ -31,7 +31,39 @@ export function IncidentReplay() {
     return () => clearTimeout(t)
   }, [playing, step])
 
+  const sectionRef = useRef<HTMLElement>(null)
+  const inView = useInView(sectionRef, { once: true, amount: 0.5 })
+  const touched = useRef(false)
+
+  useEffect(() => {
+    if (!inView || touched.current) return
+    const t = setTimeout(() => {
+      if (!touched.current) setPlaying(true)
+    }, 900)
+    return () => clearTimeout(t)
+  }, [inView])
+
+  const autoBreakAt = Math.min(2, hopFixes.length - 1)
+  useEffect(() => {
+    if (!inView || touched.current || mode !== 'replay' || step < LAST) return
+    const toBreak = setTimeout(() => {
+      if (touched.current) return
+      setMode('break')
+      setCut(null)
+    }, 2200)
+    return () => clearTimeout(toBreak)
+  }, [inView, mode, step])
+
+  useEffect(() => {
+    if (!inView || touched.current || mode !== 'break' || cut !== null) return
+    const cutIt = setTimeout(() => {
+      if (!touched.current) setCut(autoBreakAt)
+    }, 2000)
+    return () => clearTimeout(cutIt)
+  }, [inView, mode, cut, autoBreakAt])
+
   const toggle = () => {
+    touched.current = true
     if (step >= LAST) {
       setStep(-1)
       setPlaying(true)
@@ -41,6 +73,7 @@ export function IncidentReplay() {
   }
 
   const switchMode = (next: Mode) => {
+    touched.current = true
     setMode(next)
     setPlaying(false)
     if (next === 'break') setStep(LAST)
@@ -63,10 +96,10 @@ export function IncidentReplay() {
   if (step >= LAST) lines.push({ k: 'err', t: `impact: ${chain.impact}` })
 
   return (
-    <section id="replay" className="px-6 py-20 md:py-28">
+    <section ref={sectionRef} id="replay" className="px-6 py-20 md:py-28">
       <SectionHeading eyebrow="Replay" title="Walk the path, then break it">
-        Built from public reporting. Replay the intrusion hop by hop, then switch modes and fix any one hop to see
-        the chain stop there.
+        Built from public reporting. Watch the intrusion play out hop by hop, then watch one fix stop the chain. Once
+        it finishes, the controls are yours.
       </SectionHeading>
 
       <div className="mx-auto mt-14 max-w-6xl">
@@ -118,6 +151,7 @@ export function IncidentReplay() {
                   max={LAST}
                   value={step}
                   onChange={(e) => {
+                    touched.current = true
                     setPlaying(false)
                     setStep(Number(e.target.value))
                   }}
@@ -133,7 +167,10 @@ export function IncidentReplay() {
               <div role="group" aria-label="Controls" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
                 <button
                   aria-pressed={cut === null}
-                  onClick={() => setCut(null)}
+                  onClick={() => {
+                    touched.current = true
+                    setCut(null)
+                  }}
                   className={cn(
                     'rounded-xl border px-4 py-3 text-left text-sm transition-colors',
                     cut === null ? 'border-ember/60 bg-ember/10 text-foreground' : 'border-border bg-card/60 text-muted-foreground hover:border-primary/50',
@@ -146,7 +183,10 @@ export function IncidentReplay() {
                   <button
                     key={fix}
                     aria-pressed={cut === i}
-                    onClick={() => setCut(i)}
+                    onClick={() => {
+                      touched.current = true
+                      setCut(i)
+                    }}
                     className={cn(
                       'rounded-xl border px-4 py-3 text-left text-sm transition-colors',
                       cut === i ? 'border-primary bg-primary/10 text-foreground' : 'border-border bg-card/60 text-muted-foreground hover:border-primary/50',

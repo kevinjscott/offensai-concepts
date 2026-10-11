@@ -40,7 +40,7 @@ const timeline = JSON.parse(readFileSync('src/timeline-breach.json', 'utf8')) as
 // Music is added to a separate bed so it can be ducked under the voice before summing.
 const musicL = new Float32Array(N)
 const musicR = new Float32Array(N)
-const music = readWav('public/audio/music.wav')
+const music = readWav('public/audio/music-breach.wav')
 const musicLen = Math.min(N, Math.floor((music.frames * SR) / music.rate))
 for (let k = 0; k < musicLen; k++) {
   const src = Math.min(music.frames - 1, Math.floor((k * music.rate) / SR))

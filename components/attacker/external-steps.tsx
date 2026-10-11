@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'motion/react'
 import { SectionHeading } from '@/components/brand/reveal'
+import { ScrollStage } from '@/components/brand/scroll-stage'
 import { TermRow } from '@/components/term/term-lines'
 import { TerminalWindow } from '@/components/term/terminal-window'
 import { externalChain } from '@/lib/chains'
@@ -51,17 +51,23 @@ const steps: { title: string; text: string; lines: TermLine[] }[] = [
 const starts = ['Domain', 'Account ID', 'Bucket']
 
 export function ExternalSteps() {
-  const [active, setActive] = useState(0)
+  return (
+    <ScrollStage id="external" label="From external recon to proven exposure" heightSvh={340}>
+      {({ progress, jumpTo }) => (
+        <ExternalBody active={Math.min(steps.length - 1, Math.floor(progress * steps.length))} onPick={(i) => jumpTo((i + 0.5) / steps.length)} />
+      )}
+    </ScrollStage>
+  )
+}
+
+function ExternalBody({ active, onPick }: { active: number; onPick: (i: number) => void }) {
   const step = steps[active]
 
   return (
-    <section id="external" className="px-6 py-20 md:py-28">
-      <SectionHeading eyebrow="External attack validation" title="From external recon to proven exposure">
-        Map your external attack surface using open-source signals, then validate which paths can actually be exploited
-        through controlled, real attack execution.
-      </SectionHeading>
+    <div>
+      <SectionHeading eyebrow="External attack validation" title="From external recon to proven exposure" />
 
-      <div className="mx-auto mt-14 grid max-w-6xl gap-6 lg:grid-cols-[1fr_1.2fr]">
+      <div className="mx-auto mt-10 grid max-w-6xl gap-6 lg:grid-cols-[1fr_1.2fr]">
         <div>
           <div className="mb-4 flex flex-wrap items-center gap-2 text-xs">
             <span className="font-mono uppercase tracking-widest text-muted-foreground">Start with</span>
@@ -77,7 +83,7 @@ export function ExternalSteps() {
                 key={s.title}
                 role="tab"
                 aria-selected={i === active}
-                onClick={() => setActive(i)}
+                onClick={() => onPick(i)}
                 className={cn(
                   'rounded-2xl border p-4 text-left transition-colors',
                   i === active ? 'border-primary/60 bg-accent' : 'border-border bg-card/50 hover:border-primary/30',
@@ -116,6 +122,6 @@ export function ExternalSteps() {
           </p>
         </div>
       </div>
-    </section>
+    </div>
   )
 }
