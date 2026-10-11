@@ -13,7 +13,7 @@ const WEIGHTS: [string, string][] = [
   ['700', 'silka-bold'],
 ]
 
-const useBrandFont = () => {
+export const useBrandFont = () => {
   const [handle] = useState(() => delayRender('Loading Silka'))
   useEffect(() => {
     const faces = [

@@ -1,0 +1,31 @@
+'use client'
+
+import dynamic from 'next/dynamic'
+
+const LivePlayer = dynamic(() => import('./live-player').then((m) => m.LivePlayer), {
+  ssr: false,
+  loading: () => <div className="aspect-video w-full animate-pulse rounded-xl bg-card" aria-hidden />,
+})
+
+const videos = [
+  { id: 'explainer', label: 'Video A', note: '60s explainer, with voiceover' },
+  { id: 'proof', label: 'Video B', note: '30s proof-first cut, silent' },
+] as const
+
+export function VideoPair() {
+  return (
+    <section aria-label="Explainer videos" className="grid gap-4 md:grid-cols-2">
+      {videos.map((v) => (
+        <figure key={v.id} className="min-w-0">
+          <div className="overflow-hidden rounded-xl border border-border bg-black">
+            <LivePlayer variant={v.id} />
+          </div>
+          <figcaption className="mt-2 flex items-baseline gap-2 text-sm">
+            <span className="font-semibold">{v.label}</span>
+            <span className="text-muted-foreground">{v.note}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </section>
+  )
+}
