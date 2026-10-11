@@ -2,12 +2,12 @@
 
 import { Player } from '@remotion/player'
 import { Explainer } from '../../video/src/Explainer'
-import { ProofCut, PROOF_DURATION } from '../../video/src/ProofCut'
+import { BreachCut, BREACH_DURATION } from '../../video/src/BreachCut'
 import { DURATION, FPS, H, W } from '../../video/src/theme'
 
 const variants = {
   explainer: { component: Explainer, frames: DURATION, props: { withAudio: true }, poster: 'Breaches are chains, not findings' },
-  proof: { component: ProofCut, frames: PROOF_DURATION, props: {}, poster: 'A cloud is a graph.' },
+  breach: { component: BreachCut, frames: BREACH_DURATION, props: { withAudio: true }, poster: 'Hugging Face, July 2026. Not one bug. A chain.' },
 } as const
 
 export function LivePlayer({ variant }: { variant: keyof typeof variants }) {
