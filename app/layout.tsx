@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   title: 'OFFENSAI | Cloud attack paths, proven',
   description:
     'OFFENSAI chains live cloud changes into real attack paths and validates which ones are exploitable. Proof, not alerts.',
+  robots: { index: false, follow: false },
 }
 
 export const viewport: Viewport = {
