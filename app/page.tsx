@@ -1,7 +1,14 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import type { Metadata } from 'next'
 import { VideoPair } from '@/components/explainer/video-pair'
+import { K8sLaunchSection } from '@/components/explainer/k8s-launch-section'
 import { concepts } from '@/lib/concepts'
+
+export const metadata: Metadata = {
+  title: 'OFFENSAI | Kubernetes launch reel',
+  description: 'Watch a local autonomous agent validate a Kubernetes attack path. Explore technical and executive launch-video cuts with real terminal evidence.',
+}
 
 export default function Home() {
   return (
@@ -12,7 +19,12 @@ export default function Home() {
         <span className="font-mono text-xs text-muted-foreground">Internal concept exploration</span>
       </header>
 
-      <VideoPair />
+      <K8sLaunchSection />
+
+      <section aria-labelledby="previous-videos" className="flex flex-col gap-4 border-t border-border py-6">
+        <h2 id="previous-videos" className="font-mono text-sm uppercase tracking-wider text-muted-foreground">Previous video concepts</h2>
+        <VideoPair />
+      </section>
 
       <ul className="grid w-full gap-3 sm:grid-cols-2 md:grid-cols-3">
         {concepts.map((c) => (

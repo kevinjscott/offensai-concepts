@@ -1,0 +1,48 @@
+export const k8sReels = [
+  {
+    id: 'technical',
+    label: 'The technical cut',
+    audience: 'X / YouTube',
+    duration: '0:35',
+    src: '/video/k8s-technical.mp4',
+    poster: '/video/k8s-technical-poster.jpg',
+    title: 'A restricted service account. One working path to system:masters.',
+    description: 'Real terminal footage. Two reasoning intervals at 8×, a 2× transition, and close-ups on the impersonation gate and outcome. Caption-led, with a new pulse soundtrack—not a re-recorded voiceover.',
+    post: 'A restricted Kubernetes service account. Three RBAC hops. One working path to system:masters.\n\nWatch OFFENSAI reason locally, within deterministic guardrails, and validate group impersonation without creating persistent server objects.\n\nNo persistent objects does not mean no audit trail. This is proof of a working path—not a promise of invisibility.',
+  },
+  {
+    id: 'executive',
+    label: 'The executive cut',
+    audience: 'LinkedIn',
+    duration: '0:35',
+    src: '/video/k8s-executive.mp4',
+    poster: '/video/k8s-executive-poster.jpg',
+    title: 'Three identities from the crown jewel. Which findings actually connect?',
+    description: 'The same evidence and tighter pacing, framed around prioritization, local reasoning, and bounded execution. Caption-led, with a new pulse soundtrack—not a re-recorded voiceover.',
+    post: 'Your scanner lists Kubernetes misconfigurations. Which ones connect to the secret that matters?\n\nIn this demonstration, OFFENSAI chains a restricted service account through group impersonation to validate a real attack path.\n\nLocal model reasoning. Deterministic safety gates. No persistent server objects created. Kubernetes audit logging can still capture the request.\n\nStop patching lists. Start breaking chains.',
+  },
+  {
+    id: 'original',
+    label: 'Original recording',
+    audience: 'Source / v5',
+    duration: '1:02',
+    src: '/video/k8s-original.mp4',
+    poster: '/video/k8s-source-poster.jpg',
+    title: 'The full run, as supplied.',
+    description: 'Original timing and narration, converted from HEVC MOV to H.264 MP4 for browser compatibility. The uploaded MOV is preserved separately.',
+    post: '',
+  },
+] as const
+
+export const k8sScript = [
+  ['0:00', 'A restricted service account. One working path to system:masters.'],
+  ['0:03', 'Local AI. No cloud model APIs. Autonomous. Within deterministic guardrails.'],
+  ['0:09', 'Recon: 52 RBAC rules. A continuity token connects the next identity.'],
+  ['0:15', '8× speed: local model reasoning.'],
+  ['0:16', '2× speed: the path reaches group impersonation.'],
+  ['0:19', '8× speed: local model reasoning.'],
+  ['0:21', 'The pivot: system:masters. Group impersonation on a read request.'],
+  ['0:24', 'Goal met: secret accessed. No persistent server objects created.'],
+  ['0:27', 'No persistent objects is not no audit trail. Kubernetes audit logs may record the request.'],
+  ['0:31', 'Scanners give you findings. OFFENSAI proves the working path.'],
+] as const
